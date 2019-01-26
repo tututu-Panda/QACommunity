@@ -1,4 +1,5 @@
 # QACommunity
+<<<<<<< HEAD
 QA问答社区
 
 > 1. 感谢 [Layui](http://www.layui.com/) 开源的社区模板
@@ -32,3 +33,6 @@ QA问答社区
  3.后台管理问题
  ![详情内容](https://github.com/xuanhaoo/QACommunity/blob/master/img/info.png)
 ![](https://github.com/xuanhaoo/QACommunity/blob/master/img/index3.png)
+=======
+毕业设计-QA问答社区
+>>>>>>> d15625f9e3aa600c32b80782e8f4303bdff3c6d4

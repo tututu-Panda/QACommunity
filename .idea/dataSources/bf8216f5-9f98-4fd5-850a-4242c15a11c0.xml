@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="sessionFactory/Hibernate">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+    <root id="1"/>
+    <schema id="2" parent="1" name="qacommunity">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="blog"/>
+    <schema id="4" parent="1" name="cdzzy"/>
+    <schema id="5" parent="1" name="cuitcheck"/>
+    <schema id="6" parent="1" name="ecshop"/>
+    <schema id="7" parent="1" name="hibernate"/>
+    <schema id="8" parent="1" name="information_schema"/>
+    <schema id="9" parent="1" name="jdbc"/>
+    <schema id="10" parent="1" name="mysql"/>
+    <schema id="11" parent="1" name="newsreport"/>
+    <schema id="12" parent="1" name="performance_schema"/>
+    <schema id="13" parent="1" name="phocost"/>
+    <schema id="14" parent="1" name="phpmyadmin"/>
+    <schema id="15" parent="1" name="shopping"/>
+    <schema id="16" parent="1" name="sjktest"/>
+    <schema id="17" parent="1" name="test"/>
+    <schema id="18" parent="1" name="wish"/>
+  </database-model>
+</dataSource>
