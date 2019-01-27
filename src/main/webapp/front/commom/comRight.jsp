@@ -23,7 +23,7 @@
 
 
     <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
-        <h3 class="fly-panel-title">回贴总榜</h3>
+        <h3 class="fly-panel-title">回贴周榜</h3>
         <dl id="rank">
             <%--js接口添加用户--%>
         </dl>

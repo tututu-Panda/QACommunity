@@ -4,14 +4,18 @@ import com.qa.dao.FrontIndexDao;
 import com.qa.dao.QaBackQuesDao;
 import com.qa.entity.BackQuestion;
 import com.qa.service.FrontIndexService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.transform.Templates;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  *Create by 3tu on 2017/12/28
@@ -21,8 +25,10 @@ public class FrontIndexServiceImpl implements FrontIndexService{
 
     @Resource
     private FrontIndexDao frontIndexDao;
-    @Resource
-    private QaBackQuesDao qaBackQuesDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public Map getQuesIndex(String pages, String orderTypes, int topic) {
         List<BackQuestion> questionList = new ArrayList<>();
@@ -109,7 +115,18 @@ public class FrontIndexServiceImpl implements FrontIndexService{
 
     @Override
     public List getReplyRank() {
-        return frontIndexDao.getReplyRank();
+
+        // 利用 redis 设置缓存周榜
+        if(redisTemplate.opsForList().size("rank") == 0){
+            List list = frontIndexDao.getReplyRank();
+            redisTemplate.opsForList().rightPush("rank",list);
+            redisTemplate.expire("rank",7, TimeUnit.DAYS);
+            System.out.println("正在缓存---");
+        }
+//       List list = redisTemplate.opsForList().range("rank", 0 , redisTemplate.opsForList().size("rank"));
+//        List ob = (List) list.get(0);
+//        System.out.println("ob++++++"+ob.get(0));
+            return (List) redisTemplate.opsForList().range("rank", 0, redisTemplate.opsForList().size("rank")).get(0);
     }
 
     @Override
