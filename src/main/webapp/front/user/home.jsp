@@ -46,7 +46,7 @@
 
 
     <p class="fly-home-info">
-        <i class="iconfont icon-shijian"></i><span><s:date format="yyyy-MM-dd" name="userinfo.get(3)" /> 加入该社区</span>
+        <i class="iconfont icon-shijian"></i><span><s:date format="yyyy-MM-dd" name="userinfo[3]" /> 加入该社区</span>
     </p>
 
     <div class="fly-sns" data-user="">
