@@ -16,6 +16,7 @@ public class QaQuestion {
     private String labelIds;
     private Date createDate;
     private int createUser;
+    private int views;
     // 问题与话题是多对一的关系
     private QaTopic topic;
     // 问题与用户是多对一的关系
@@ -89,6 +90,16 @@ public class QaQuestion {
 
     public void setCreateUser(int createUser) {
         this.createUser = createUser;
+    }
+
+    @Basic
+    @Column(name = "views", nullable = false, length = 11)
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 
     @Override

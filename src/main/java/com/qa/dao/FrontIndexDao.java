@@ -38,4 +38,8 @@ public interface FrontIndexDao {
     List getReplyRank();
 
     List gerRandomQues();
+
+    int getViews(int ques_id);
+
+    void updateViews(int ques_id, int views);
 }

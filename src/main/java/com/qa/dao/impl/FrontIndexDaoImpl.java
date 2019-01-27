@@ -60,11 +60,10 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
             sql =  "select t1.q_id as qId,    t1.title as qTitle,     t1.create_date as createDate,       " +
                     "t2.to_id as toId,      t2.topic_name as topicName,     t3.id as id,  " +
                     "t3.name as accountName,    t3.photo as userPhoto,      count(DISTINCT t4.c_id) commNum,    " +
-                    "count(DISTINCT t6.id)browNum from qa_question as t1 "  +
+                    "t1.views as browNum from qa_question as t1 "  +
                     " left join qa_topic t2 on t1.topic_id=t2.to_id "+
                     " left join qa_front_user t3 on t1.create_user=t3.id" +
                     " left join qa_comment t4 on t1.q_id=t4.question_id" +
-                    " left join qa_question_browse t6 on t1.q_id=t6.q_id WHERE t1.topic_id = " +topic +
                     " group by t1.q_id order by "+orderString+" desc";
         }
 
@@ -73,11 +72,10 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
             sql = "select t1.q_id as qId,    t1.title as qTitle,     t1.create_date as createDate,       " +
                     "t2.to_id as toId,      t2.topic_name as topicName,     t3.id as id,  " +
                     "t3.name as accountName,    t3.photo as userPhoto,      count(DISTINCT t4.c_id) commNum,    " +
-                    "count(DISTINCT t6.id)browNum from qa_question as t1" +
+                    "t1.views as browNum from qa_question as t1" +
                     " left join qa_topic t2 on t1.topic_id=t2.to_id" +
                     " left join qa_front_user t3 on t1.create_user=t3.id" +
                     " left join qa_comment t4 on t1.q_id=t4.question_id" +
-                    " left join qa_question_browse t6 on t1.q_id=t6.q_id" +
                     " group by t1.q_id order by "+orderString+" desc";
         }
 
@@ -123,11 +121,10 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
     public Map getTheQuesInfo(int quesId) {
         Map map = new HashMap();
         String sql = "select t1.q_id as qId, t1.title as qTitle,t1.detail as quesDetail,t1.label_ids as labels,t1.create_date as createDate,t2.to_id as toId,t2.topic_name as topicName," +
-                " t3.name as accountName,t3.photo as userPhoto, count(DISTINCT t4.c_id) commNum, count(DISTINCT t6.id)browNum, t1.create_user as userId  from qa_question as t1" +
+                " t3.name as accountName,t3.photo as userPhoto, count(DISTINCT t4.c_id) commNum, t1.views as browNum, t1.create_user as userId  from qa_question as t1" +
                 " left join qa_topic t2 on t1.topic_id=t2.to_id" +
                 " left join qa_front_user t3 on t1.create_user=t3.id" +
                 " left join qa_comment t4 on t1.q_id=t4.question_id" +
-                " left join qa_question_browse t6 on t1.q_id=t6.q_id" +
                 " WHERE t1.q_id = "+quesId+" group by t1.q_id";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
         List list = query.list();
@@ -174,6 +171,10 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         return query.list();
     }
 
+    /**
+     * 获取随机问题
+     * @return
+     */
     @Override
     public List gerRandomQues() {
         int limit = 5;
@@ -184,4 +185,27 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         query.setInteger(0,limit);
         return query.list();
     }
+
+    /**
+     * 查询浏览量
+     */
+    public int getViews(int ques_id){
+        String hql = "select t.views from QaQuestion t where t.id = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setInteger(0,ques_id);
+        return (int) query.list().get(0);
+    }
+
+    /**
+     * 更新浏览量
+     * @param ques_id
+     */
+    public void updateViews(int ques_id, int views){
+        String hql = "update QaQuestion q set q.views = ?  where q.qId = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setInteger(0,views);
+        query.setInteger(1,ques_id);
+        query.executeUpdate();
+    }
+
 }

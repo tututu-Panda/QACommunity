@@ -19,7 +19,7 @@ public class BackQuestion {
     private String account;
     private String accountName;
     private BigInteger commentCount;        //评论统计
-    private BigInteger browseCount;         //浏览统计
+    private int browseCount;         //浏览统计
     private String headPhoto;   //头像
 
     public String getHeadPhoto() {
@@ -111,11 +111,11 @@ public class BackQuestion {
         this.commentCount = commentCount;
     }
 
-    public BigInteger getBrowseCount() {
+    public int getBrowseCount() {
         return browseCount;
     }
 
-    public void setBrowseCount(BigInteger browseCount) {
+    public void setBrowseCount(int browseCount) {
         this.browseCount = browseCount;
     }
 

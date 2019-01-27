@@ -134,7 +134,7 @@ public class FrontUserAction extends BaseAction {
     }
 
 
-    /** <input type="file" name="headImg"/>
+    /**
      * 描述： 用户登出事件
     */
     public String userLogout(){
@@ -358,18 +358,23 @@ public class FrontUserAction extends BaseAction {
     */
     public String userHome(){
         int id;
+        // 获得用户id
+        Map session = ActionContext.getContext().getSession();
+        Map user = (Map) session.get("frontUser");//获取session
+
         // 获取值栈对象
         ValueStack valueStack = ServletActionContext.getContext().getValueStack();
 
         String requestId = request.getParameter("id");
         if(requestId != null){
             id = Integer.parseInt(requestId);
-            valueStack.set("home",0);   // 标志为访问其他用户信息
+            if(id != (int)user.get("id") ){
+                valueStack.set("home",0);   // 标志为访问其他用户信息
+            }else{
+                valueStack.set("home",1);   // 标志为访问用户自己信息
+            }
         }else {
 
-            // 获得用户id
-            Map session = ActionContext.getContext().getSession();
-            Map user = (Map) session.get("frontUser");//获取session
             id = (Integer) user.get("id");
             valueStack.set("home",1);   // 标志位访问用户自己信息
         }

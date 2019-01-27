@@ -38,6 +38,7 @@ public class FrontIndexServiceImpl implements FrontIndexService{
         List list = (List)map.get("list");
 
         for(int i = 0;i < list.size();i++) {
+
             Object[] object = (Object[]) list.get(i);
             BackQuestion bq = new BackQuestion();
             bq.setQuesId((Integer) object[0]);
@@ -49,7 +50,22 @@ public class FrontIndexServiceImpl implements FrontIndexService{
             bq.setAccountName((String)object[6]);
             bq.setHeadPhoto((String)object[7]);
             bq.setCommentCount((BigInteger) object[8]);
-            bq.setBrowseCount((BigInteger)object[9]);
+//            bq.setBrowseCount((int)object[9]);
+
+            // redis获取该问题id的浏览量,如果没有再进行查询添加
+            if(redisTemplate.opsForValue().get(("shadow:views_"+object[0])) != null){
+                System.out.println("获取缓存---");
+                bq.setBrowseCount((int) redisTemplate.opsForValue().get(("views_"+object[0])));
+            }else{
+                System.out.println("添加缓存----");
+                // 查询浏览量,并存入redis
+                int views = frontIndexDao.getViews((Integer) object[0]);
+                // 设置一个shadowkey用户过期事件回调
+                // 在回调事件中,通过key并同步到数据库中
+                redisTemplate.opsForValue().set("shadow:views_"+object[0],"",1, TimeUnit.DAYS);
+                redisTemplate.opsForValue().set("views_"+object[0],views);
+                bq.setBrowseCount(views);
+            }
 
             questionList.add(bq);
         }
@@ -69,28 +85,53 @@ public class FrontIndexServiceImpl implements FrontIndexService{
         Map map = this.frontIndexDao.getTheQuesInfo(quesId);
         List list = (List)map.get("list");
 
-        for(int i = 0;i < list.size();i++) {
-            Object[] object = (Object[]) list.get(i);// 每行记录不在是一个对象 而是一个数组
-            String labelIds = (String) object[3];
-            String[] labelNames = this.frontIndexDao.LabelList(labelIds);  //调用函数获取每个问题所对应的标签信息
+        int views;
 
-            //新建实例，并赋值
-            BackQuestion bqt = new BackQuestion();
-            bqt.setQuesId((Integer) object[0]);
-            bqt.setQuesTitle((String) object[1]);
-            bqt.setQuesDetail((String) object[2]);
-            bqt.setLabels(labelNames);
-            bqt.setCreateDate((Date) object[4]);
-            bqt.setToId((Integer) object[5]);
-            bqt.setTopicName((String) object[6]);
-            bqt.setAccountName((String) object[7]);
-            bqt.setHeadPhoto((String)object[8]);
-            bqt.setCommentCount((BigInteger)object[9]);
-            bqt.setBrowseCount((BigInteger)object[10]);
-            bqt.setId((int)object[11]);
-            //将对象实例添加进入map集合
-            question.add(bqt);
+        // 并发访问浏览量
+        // (某时刻刚刚进行redis添加到mysql数据库, 其他线程访问该变量时redis为空, 这样可能导致重置访问量)
+        synchronized (this){
+        // redis获取该问题id的浏览量,如果没有再进行查询添加
+        if(redisTemplate.opsForValue().get(("shadow:views_"+quesId)) != null){
+            System.out.println("获取缓存---");
+            views = (int) redisTemplate.opsForValue().get(("views_"+quesId));
+        }else{
+            System.out.println("添加缓存----");
+            // 查询浏览量,并存入redis
+            views = frontIndexDao.getViews(quesId);
+            // 设置一个shadowkey用户过期事件回调
+            // 在回调事件中,通过key并同步到数据库中
+            redisTemplate.opsForValue().set("shadow:views_"+quesId,"",1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set("views_"+quesId,views);
         }
+
+//        System.out.println("sdadsda:"+redisTemplate.opsForValue().get(("views_"+quesId)));
+            // 每次自增1
+            redisTemplate.opsForValue().set("views_"+quesId,++views);
+        }
+
+        Object[] object = (Object[]) list.get(0);// 每行记录不在是一个对象 而是一个数组
+        String labelIds = (String) object[3];
+        String[] labelNames = this.frontIndexDao.LabelList(labelIds);  //调用函数获取每个问题所对应的标签信息
+
+
+
+        //新建实例，并赋值
+        BackQuestion bqt = new BackQuestion();
+        bqt.setQuesId((Integer) object[0]);
+        bqt.setQuesTitle((String) object[1]);
+        bqt.setQuesDetail((String) object[2]);
+        bqt.setLabels(labelNames);
+        bqt.setCreateDate((Date) object[4]);
+        bqt.setToId((Integer) object[5]);
+        bqt.setTopicName((String) object[6]);
+        bqt.setAccountName((String) object[7]);
+        bqt.setHeadPhoto((String)object[8]);
+        bqt.setCommentCount((BigInteger)object[9]);
+        bqt.setBrowseCount(views);
+        bqt.setId((int)object[11]);
+        //将对象实例添加进入map集合
+        question.add(bqt);
+
 
         map.remove("list");
         map.put("question",question);

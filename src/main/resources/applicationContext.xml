@@ -86,7 +86,6 @@
     </bean>
 
     <!-- 加载redis配置文件 -->
-    <context:property-placeholder location="classpath:redis.properties" />
     <bean id="jedisPoolConfig1" class="redis.clients.jedis.JedisPoolConfig">
     </bean>
 
@@ -132,6 +131,27 @@
         <constructor-arg index="4" value="123456" />
     </bean>
     <!-- ################JedisPool操作配置end ################################-->
+
+    <!--声明消息侦听器容器 -->
+    <bean id="messageListener" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
+        <constructor-arg>
+            <bean class="com.qa.Listener.Impl.MessageDelegateImpl"/>
+        </constructor-arg>
+    </bean>
+
+    <!--订阅失效事件-->
+    <bean id="redisContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="messageListeners">
+            <map>
+                <entry key-ref="messageListener">
+                    <bean class="org.springframework.data.redis.listener.ChannelTopic">
+                        <constructor-arg value="__keyevent@0__:expired"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
     <!-- 用注解来实现事物管理 -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
