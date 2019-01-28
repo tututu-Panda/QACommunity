@@ -63,8 +63,8 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.autoReconnect">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.format_sql">true</prop>-->
                 <!-- 解决session关闭问题 -->
                 <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
                 <prop key="current_session_context_class">thread</prop>

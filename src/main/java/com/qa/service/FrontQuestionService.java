@@ -18,4 +18,7 @@ public interface FrontQuestionService {
 
     int addQues(QaQuestion qaQuestion);
 
+    boolean editQues(QaQuestion qaQuestion);
+
+    boolean checkQuesByUser(int id, int ques_id);
 }

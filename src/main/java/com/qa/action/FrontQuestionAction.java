@@ -5,7 +5,6 @@ import com.opensymphony.xwork2.util.ValueStack;
 import com.qa.entity.QaComment;
 import com.qa.entity.QaQuestion;
 import com.qa.service.FrontQuestionService;
-import com.qa.service.FrontUserService;
 import com.qa.service.QaBackLabelService;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
@@ -44,6 +43,7 @@ public class FrontQuestionAction extends BaseAction {
     private Map<Object,Object> map = new HashMap<>();    // 返回的json信息
 
     private JSONObject labelList;
+
 
 
     /**
@@ -205,6 +205,66 @@ public class FrontQuestionAction extends BaseAction {
     }
 
 
+    /**
+     * 编辑问题
+     * @return
+     */
+    public String editQuestion(){
+
+        // 获取用户信息
+        Map session = ActionContext.getContext().getSession();
+        Map user = (Map) session.get("frontUser");//获取session
+        int id = (int) user.get("id");
+
+
+        // 获取问题相关信息
+        int ques_id = Integer.parseInt(request.getParameter("q_id"));
+
+
+        // 检查用户id与问题id 是否匹配
+        boolean b = frontQuestionService.checkQuesByUser(id,ques_id);
+        if(b){
+            // 获取问题详情
+             List ques = (List) frontQuestionService.getQuestionById(ques_id);
+             // 获取话题标签
+            List topic_list = qaBackLabelService.getTopicList();
+            ValueStack vs = ServletActionContext.getContext().getValueStack();
+            vs.set("quesInfo",ques.get(0));
+            vs.set("topicList",topic_list);
+            return "editQuestionView";
+        }
+        return "error";
+
+    }
+
+
+    public String editQuesHandle(){
+        Map<String, Object> map = new HashMap<>();    // 定义map集合存如入返回json的集合
+        status = "0";
+
+        // 获取用户信息
+        Map session = ActionContext.getContext().getSession();
+        Map user = (Map) session.get("frontUser");//获取session
+        int id = (int) user.get("id");
+
+        if(qaQuestion !=null){
+            System.out.println(qaQuestion.getLabelIds() );
+            // 前台传过的值为String,无法更新,因此需要手动修改
+            int q_id = Integer.parseInt(request.getParameter("q_id"));
+            qaQuestion.setqId(q_id);
+            // 由于更新操作必须传入非空值,因此需要手动设置
+            qaQuestion.setCreateUser(id);
+            boolean b = frontQuestionService.editQues(qaQuestion);
+            if(b){
+                status = "1";
+            }
+        }
+
+        map.put("status",status);
+        JSONObject.fromObject(map);
+
+        return "editQuesResult";
+    }
 
 
     public String getStatus() {

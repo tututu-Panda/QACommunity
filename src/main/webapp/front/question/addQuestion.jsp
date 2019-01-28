@@ -59,8 +59,8 @@
                                 <div class="layui-col-md3">
                                     <label class="layui-form-label">选择话题</label>
                                     <div class="layui-input-block">
-                                        <select name="qaQuestion.topicId" id="topicId" class="selectpicker" lay-filter="topicS" data-title="选择话题" required="required" data-style="btn-default btn-block" data-menu-style="dropdown-blue">
-                                            <option disabled>请选择话题</option>
+                                        <select name="qaQuestion.topicId" id="topicId" class="selectpicker" lay-verify="required" lay-filter="topicS" data-title="选择话题" required data-style="btn-default btn-block" data-menu-style="dropdown-blue">
+                                            <option value="" >请选择话题</option>
                                             <s:iterator value="topicList" var="topic">
                                                 <option value="<s:property value="#topic.toId"/>"><s:property value="#topic.topicName"/></option>
                                             </s:iterator>
@@ -87,7 +87,7 @@
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
                                     <%--<textarea id="L_content" name="qaQuestion.detail" required lay-verify="required" placeholder="详细描述" class="layui-textarea fly-editor" style="height: 260px;"></textarea>--%>
-                                    <textarea id="L_content" name="qaQuestion.detail"></textarea>
+                                    <textarea id="L_content" name="qaQuestion.detail" ></textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -122,6 +122,7 @@
                 url:"<%=path%>/front/frontQuestion_uploadImage.action"
             }
         });
+        layedit.sync(edit);
 
         form.on('select(topicS)',function() {
             var topicId = $('#topicId').val();
@@ -135,7 +136,8 @@
                         ajaxLabel(data);
                         form.render();
                     }else {
-                        layer.msg("数据错误！");
+                        layer.msg("数据错误！请选择话题");
+                        ajaxLabel(data);
                     }
                 }
             });
@@ -159,6 +161,11 @@
         }
 
         form.on('submit(addQues)',function(){
+            //用于同步编辑器内容到textarea
+            if(layedit.getContent(edit) == ""){
+                layer.msg("请输入内容!");
+                return false;
+            }
             $("#L_content").val(layedit.getContent(edit));
             layer.confirm('确认发布,问题一经发布，将不可修改？', {
                 btn: ['确认', '取消'] //按钮

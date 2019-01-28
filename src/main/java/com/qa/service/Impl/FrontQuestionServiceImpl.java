@@ -26,8 +26,7 @@ public class FrontQuestionServiceImpl implements FrontQuestionService {
 
     @Override
     public Object getQuestionById(int id) {
-        Object b = frontQustionDao.getQuestionById(id);
-        return b;
+        return frontQustionDao.getQuestionById(id);
     }
 
     @Override
@@ -47,6 +46,17 @@ public class FrontQuestionServiceImpl implements FrontQuestionService {
         if(b)
             return 1;
         return 0;
+    }
+
+    @Override
+    public boolean editQues(QaQuestion qaQuestion) {
+        return frontQustionDao.editQues(qaQuestion);
+    }
+
+
+    @Override
+    public boolean checkQuesByUser(int id, int ques_id) {
+        return frontQustionDao.checkQuesByUser(id,ques_id);
     }
 
 }

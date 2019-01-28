@@ -76,6 +76,7 @@
                 <a class="jie-title" href="<%=basePath %>/front/frontIndex_getTheQuestion?quesId=<s:property value="list[#st.index][0]"/>"><s:property value="list[#st.index][1]"/></a>
                 <i><s:date name="list[#st.index][2]"/></i>
                 <a class="mine-edit" href="<%=basePath %>/front/frontIndex_getTheQuestion?quesId=<s:property value="list[#st.index][0]"/>">查看</a>
+                <a class="mine-edit" href="<%=basePath %>/front/frontQuestion_editQuestion?q_id=<s:property value="list[#st.index][0]"/>">编辑</a>
               </li>
             </s:iterator>
 

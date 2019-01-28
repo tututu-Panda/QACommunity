@@ -14,4 +14,7 @@ public interface FrontQuestionDao {
     boolean addReply(QaComment qaComment);
     boolean addQues(QaQuestion qaQuestion);
 
+    boolean checkQuesByUser(int id, int ques_id);
+
+    boolean editQues(QaQuestion qaQuestion);
 }

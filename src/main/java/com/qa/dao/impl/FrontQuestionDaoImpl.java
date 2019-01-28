@@ -30,7 +30,7 @@ public class FrontQuestionDaoImpl implements FrontQuestionDao{
 
         // 查询问题的标题， 问题的创建时间， 问题的详情， 用户的id， 用户的名称，用户的性别，用户的头像
         String hql = "select t1.title as questionTitle, t1.create_date as createDate, t1.detail as questionDetail, " +
-                "t2.id as userId, t2.name as userName, t2.sex as userSex, t2.photo as userPhoto " +
+                "t2.id as userId, t2.name as userName, t2.sex as userSex, t2.photo as userPhoto, t1.topic_id , t1.label_ids, t1.q_id " +
                 "from qa_question as t1, qa_front_user as t2 " +
                 "where t1.q_id = ? and t1.create_user = t2.id";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(hql);
@@ -84,6 +84,33 @@ public class FrontQuestionDaoImpl implements FrontQuestionDao{
     public boolean addQues(QaQuestion qaQuestion) {
         Serializable i = sessionFactory.getCurrentSession().save(qaQuestion);
         return i != null;
+    }
+
+    /**
+     * 检验问题与用户是否对应
+     * @param id
+     * @param ques_id
+     * @return
+     */
+    @Override
+    public boolean checkQuesByUser(int id, int ques_id) {
+        String hql = "from QaQuestion t where t.createUser = ? and t.qId = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setInteger(0,id);
+        query.setInteger(1,ques_id);
+        return query.list().size() > 0;
+    }
+
+
+    /**
+     * 编辑问题
+     * @param qaQuestion
+     * @return
+     */
+    @Override
+    public boolean editQues(QaQuestion qaQuestion) {
+        sessionFactory.getCurrentSession().update(qaQuestion);
+        return true;
     }
 
 

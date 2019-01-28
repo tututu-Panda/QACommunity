@@ -43,7 +43,7 @@
                     <img src="<%=basePath%>/<%=frontUser.get("photo")%>">
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<%=basePath %>/frontUser/FrontUser_userSet.action"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                    <dd><a href="<%=basePath %>/frontUser/FrontUser_userIndex.action"><i class="layui-icon">&#xe620;</i>用户中心</a></dd>
                     <dd><a href="<%=basePath %>/frontUser/FrontUser_userHome.action"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
                     <dd><a href="<%=basePath %>/front/frontQuestion_addQuestion.action"><i class="layui-icon">&#xe609;</i>发布问题</a></dd>
                     <hr style="margin: 5px 0;">
@@ -53,7 +53,7 @@
             <% }else {%>
             <!-- 未登入的状态 -->
             <li class="layui-nav-item">
-                <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
+                <a class="iconfont icon-touxiang layui-hide-xs" href="/front/user/login.html"></a>
             </li>
             <li class="layui-nav-item">
                 <a href="<%=basePath %>/front/user/login.jsp" class="layui-btn layui-btn-sm login-btn" style="background: #5dade2; color:#fff;">登录</a>

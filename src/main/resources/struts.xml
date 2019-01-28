@@ -143,10 +143,15 @@
             </result>
             <result name="addTwoCommentView">/front/question/addTwoComment.jsp</result>
             <result name="addQuestionView">/front/question/addQuestion.jsp</result>
+            <result name="editQuestionView">/front/question/editQuestion.jsp</result>
+            <result name="error">/front/commom/error.jsp</result>
             <result name="ajaxLabel" type="json">
                 <param name="root">labelList</param>
             </result>
             <result name="addQuesResult" type="json">
+                <param name="root">status</param>
+            </result>
+            <result name="editQuesResult" type="json">
                 <param name="root">status</param>
             </result>
             <result name="uploadImage" type="json">
