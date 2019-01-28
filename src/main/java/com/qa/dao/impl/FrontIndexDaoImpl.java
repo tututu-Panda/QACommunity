@@ -60,11 +60,12 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
             sql =  "select t1.q_id as qId,    t1.title as qTitle,     t1.create_date as createDate,       " +
                     "t2.to_id as toId,      t2.topic_name as topicName,     t3.id as id,  " +
                     "t3.name as accountName,    t3.photo as userPhoto,      count(DISTINCT t4.c_id) commNum,    " +
-                    "t1.views as browNum from qa_question as t1 "  +
+                    "t1.views as browNum from qa_question as t1  " +
                     " left join qa_topic t2 on t1.topic_id=t2.to_id "+
                     " left join qa_front_user t3 on t1.create_user=t3.id" +
                     " left join qa_comment t4 on t1.q_id=t4.question_id" +
-                    " group by t1.q_id order by "+orderString+" desc";
+                    " where t1.topic_id = "+topic+
+                    " group by t1.q_id order by "+orderString+" desc ";
         }
 
 
@@ -84,7 +85,7 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         // 获取总数
         List list = query.list();
         count = list.size();
-//        System.out.println("count:"+count);
+        System.out.println("count:"+count);
 
         // 获取该分页的列表数据
         firstRe = pages * limit;   //当前该显示的记录开始点
