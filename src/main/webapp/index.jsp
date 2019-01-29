@@ -28,7 +28,7 @@
         </form>
     </div>
 
-    <a class="twop" href="<%=basePath %>/front/frontIndex_getQuestionIndex?page=1&orderType=1">立即跳转--->GO!</a>
+    <a class="twop"  style="text-align: left" href="<%=basePath %>/front/frontIndex_getQuestionIndex?page=1&orderType=1">立即跳转--->GO!</a>
 </div>
 
 </body>

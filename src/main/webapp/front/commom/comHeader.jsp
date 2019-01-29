@@ -18,7 +18,7 @@
 
 <div class="fly-header layui-bg-cyan">
     <div class="layui-container">
-        <a class="fly-logo" href="/">
+        <a class="fly-logo" href="<%=basePath %>">
             <img src="<%=basePath %>/static/images/logo.png" alt="layui">
         </a>
         <ul class="layui-nav fly-nav layui-hide-xs">

@@ -1,5 +1,5 @@
 body {
-
+    background: url("../images/bg.jpg") no-repeat;
 }
 .sign {
     margin-top: 15%;
@@ -11,12 +11,10 @@ body {
     color: #db1c40;
 }
 .twop {
-    margin-left: 85px;
     font-size: 22px;
     color: #49CCED;
 }
 .sign .threep {
-    margin-left: 90px;
     font-size: 22px;
     color: #bd0d13;
 }

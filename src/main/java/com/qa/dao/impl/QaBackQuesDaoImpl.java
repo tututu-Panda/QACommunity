@@ -233,16 +233,17 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
     public boolean deleteQuestion(List<Integer> q_ids) {
 
         try{
-            //删除问题
-            String hql1 = "Delete from QaQuestion where qId in (:qIds)";
-            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
-
-            int result1 = query1.setParameterList("qIds", q_ids).executeUpdate();
-            //同时删除该问题下的所有的评论（包括一级评论和二级评论）
+            //删除该问题下的所有的评论（包括一级评论和二级评论）
             String hql2 = "delete QaComment t1 where t1.questionId in (:qIds)";
             Query query2 = sessionFactory.getCurrentSession().createQuery(hql2);
             query2.setParameterList("qIds",q_ids);
             query2.executeUpdate();
+
+            //再删除问题
+            String hql1 = "Delete from QaQuestion where qId in (:qIds)";
+            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
+
+            int result1 = query1.setParameterList("qIds", q_ids).executeUpdate();
             return true;
         }catch(Exception e) {
             e.printStackTrace();
