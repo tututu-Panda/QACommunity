@@ -118,29 +118,29 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
     public Map getTheQuestion(int l_id) {
         Map map = new HashMap();  //实例化map集合
 
-        //查询该问题的题目信息
-        String sql = "select title from qa_question where q_id="+l_id+"";
-        List list = sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-        String title_temp = list.toString();
+        // 问题详情
+        String sql = "select t1.title as qTitle,t1.detail as quesDetail, t1.create_date as createDate, t2.topic_name as topicName," +
+                " t3.name as accountName,t3.photo as userPhoto, count(DISTINCT t4.c_id) commNum, t1.views as browNum  from qa_question as t1" +
+                " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                " left join qa_front_user t3 on t1.create_user=t3.id" +
+                " left join qa_comment t4 on t1.q_id=t4.question_id" +
+                " WHERE t1.q_id = "+l_id+" group by t1.q_id";
 
-        //截取标题字符串
-        int beginIndex = title_temp.indexOf("[")+1;
-        int endindex = title_temp.lastIndexOf("]");
-        String title = title_temp.substring(beginIndex, endindex);
-        //统计该问题的评论数
-        String hql1 = "select count(*) from QaComment where questionId = "+l_id+"";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql1);
-        int commentCount = ((Number) query.uniqueResult()).intValue();
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 
-        //统计该问题的浏览次数
-        String hql2 = "select count(*) from QaQuestionBrowse where qId = "+l_id+"";
-        Query query2 = sessionFactory.getCurrentSession().createQuery(hql2);
-        int browseCount = ((Number) query2.uniqueResult()).intValue();
-        //将各结果放入map中
-        map.put("lId", l_id);
-        map.put("title", title);
-        map.put("comment", commentCount);
-        map.put("browse", browseCount);
+        // 标签名称
+        String sql1 = "select label_ids FROM qa_question WHERE q_id = "+l_id ;
+        List list = sessionFactory.getCurrentSession().createSQLQuery(sql1).list();
+        String label  = (String) list.get(0);
+        String sql2 = "select label_name from qa_label where l_id  in ("+label+")";
+       list =  sessionFactory.getCurrentSession().createSQLQuery(sql2).list();
+        String[] labelNames  = (String[]) list.toArray(new String[list.size()]);
+
+        //存放入数组
+        map.put("list",query.list().get(0));
+        map.put("labels",labelNames);
+        map.put("q_id",l_id);
+
         return map;
     }
 
@@ -183,9 +183,8 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         Map map = new HashMap();
         //同样原生sql，需要左连接，因为当评论没有赞的时候一样要查询出来
         String sql = "select t1.c_id as commId,     t1.content as content,      t1.create_date as createDate,       " +
-                "t2.name as accountName,        count(t3.id) likes,     t2.photo as hphoto from qa_comment as t1" +
+                "t2.name as accountName,         t2.photo as hphoto from qa_comment as t1" +
                 " left join qa_front_user t2 on t1.create_user = t2.id" +
-                " left join qa_likes t3 on t1.c_id = t3.c_id" +
                 " where t1.pid is null and t1.question_id="+q_id+" GROUP BY t1.c_id";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
         List list = query.list();
@@ -216,9 +215,8 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
      */
     public Map getTheComment_two(int pq_id) {
         Map map = new HashMap();
-        String sql = "select t1.c_id as commId,t1.content as content,t1.create_date as createDate,t2.name as accountName,count(t3.id) likes,t2.photo as hphoto from qa_comment as t1" +
+        String sql = "select t1.c_id as commId,t1.content as content,t1.create_date as createDate,t2.name as accountName,t2.photo as hphoto from qa_comment as t1" +
                 " left join qa_front_user t2 on t1.create_user=t2.id" +
-                " left join qa_likes t3 on t1.c_id = t3.c_id" +
                 " where t1.pid="+pq_id+" group by t1.c_id";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
         List list = query.list();
