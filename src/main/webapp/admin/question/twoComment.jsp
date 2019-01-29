@@ -79,7 +79,7 @@
         <s:iterator value="qaTwoComment.two_list" var="cc">
             <div class="comment">
                 <a class="avatar">
-                    <img src="../static/images/elliot.jpg"></a>
+                    <img src="<%=basePath%>/<s:property value="#cc.HeadPhoto" /> "></a>
                 <div class="content">
                     <a class="author"><s:property value="#cc.accountName"/></a>
                     <div class="metadata">
@@ -87,7 +87,6 @@
                     </div>
                     <div class="text text_style"><s:property value="#cc.content"/></div>
                     <div class="metadata tool_comment">
-                        <div class="rating"><i class="fa fa-thumbs-o-up"><s:property value="#cc.likes"/></i></div>
                         <a class="reply deleteTwo" data-id="<s:property value="#cc.commId"/>"><i class="fa fa-trash-o"></i>删除</a>
                     </div>
                 </div>

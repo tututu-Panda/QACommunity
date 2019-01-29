@@ -124,6 +124,27 @@
             margin-right: 7px;
             float: right;
         }
+
+        .detail-about {
+            position: relative;
+            line-height: 20px;
+            padding: 15px 15px 15px 75px;
+            font-size: 13px;
+            /*background-color: #f8f8f8;*/
+            color: #999;
+        }
+        .fly-avatar {
+            position: absolute;
+            left: 11px;
+            top: 3px;
+        }
+        .fly-avatar img {
+            display: block;
+            width: 45px;
+            height: 45px;
+            margin: 0;
+            border-radius: 2px;
+        }
     </style>
 
 
@@ -132,7 +153,7 @@
     <div class="">
             <blockquote class="layui-elem-quote quote1">
 
-                <span class="title-style">问题标题：<s:property value="singleInfo.title"/></span>
+                <span class="title-style">问题标题：<s:property value="singleInfo.list[0]"/></span>
                 <a href="javascript:;" class="layui-btn layui-btn-sm returnlast">
                 <i class="layui-icon">&#xe615;</i> 返回
                 </a>
@@ -145,31 +166,60 @@
                     <legend>问题浏览信息</legend>
                     <blockquote class="layui-elem-quote quote2">
                         <form class="layui-form" style="display: inline-block;margin-left: 10px; min-height: inherit; vertical-align: bottom;">
-                            <span class="sign-style">问题总的浏览量： <s:property value="singleInfo.browse"/> 人次</span>
+                            <span class="sign-style">问题总的浏览量： <s:property value="singleInfo.list[7]"/> 人次</span>
                             <div class="layui-input-block" style="display: inline-block;margin-left: 20px; min-height: inherit; vertical-align: bottom;">
-                                    <input type="hidden" value="<s:property value="singleInfo.lId"/>" name="quesId" id="quesId">
-                                    <div class="layui-form-pane">
-                                        <label class="layui-form-label"  style="padding: 4px 15px;height:30px;">日期范围</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" class="layui-input" id="browse" placeholder=" - " style="width: 300px;height:30px; line-height:30px;">
-                                        </div>
-                                    </div>
+                                    <input type="hidden" value="<s:property value="singleInfo.q_id"/>" name="quesId" id="quesId">
                             </div>
-                                    <a href="javascript:;" class="layui-btn layui-btn-sm" id="search-brow">
-                                        <i class="layui-icon">&#xe615;</i> 查看
-                                    </a>
                         </form>
                     </blockquote>
-                    <div class="brow-echarts">
-                        <div id="browCharts" class="ct-chart">
-
-                        </div>
-                    </div>
                 </fieldset>
             </div>
 
 
         </div>
+
+        <%--问题内容--%>
+        <div class="log" >
+            <fieldset class="brow-comm">
+                <fieldset class="layui-elem-field">
+                    <legend>问题详情</legend>
+                        <div class="fly-panel detail-box">
+                            <%--标题--%>
+                            <h1 align="center"><s:property value="singleInfo.list[0]"></s:property></h1>
+                                <%--所属标签--%>
+                            <div class="fly-detail-info" style="text-align: center; padding-bottom: 2rem">
+                                <span class="layui-badge fly-detail-column" style="background-color: #999;margin: 10px 10px;  ">所属话题:<s:property value="singleInfo.list[3]"></s:property></span>
+                                    <div class="fly-admin-box" data-id="123" style="padding: 10px;">
+                                        所属标签:
+                                    <s:iterator value="singleInfo.labels" var="ql">
+                                        <span class="layui-btn layui-btn-xs jie-admin"><s:property value="#ql"></s:property></span>
+                                    </s:iterator>
+                                </div>
+                                <span class="fly-list-nums">
+                     </span>
+                            </div>
+                                <%--作者信息--%>
+                                <div class="detail-about" style="margin:0 auto; width: 30%;">
+                                    <a class="fly-avatar" >
+                                        <img  src="<%=basePath %>/<s:property value="singleInfo.list[5]" />" alt="">
+                                    </a>
+                                    <div class="fly-detail-user">
+                                            <cite><s:property value="singleInfo.list[4]"></s:property></cite>
+                                        <span><s:date name="singleInfo.list[2]" format="yyyy年MM月dd日 hh:mm:ss"></s:date></span>
+                                    </div>
+                                </div>
+                                <%--编辑器编辑格式内容--%>
+                            <fieldset class="layui-elem-field" style="padding: 30px; margin: 30px;">
+                                <legend>内容详情</legend>
+                                <div class="detail-body photos" style="    margin: 30px;">
+                                    <s:property value="singleInfo.list[1]" escape="false"></s:property>
+                                </div>
+                            </fieldset>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
         <%--问题的评论--%>
         <div class="log">
             <div class="brow-comm">
@@ -177,7 +227,7 @@
                     <legend>评论信息</legend>
                     <blockquote class="layui-elem-quote quote3">
                         <form class="layui-form" style="display: inline-block;margin-left: 10px; min-height: inherit; vertical-align: bottom;">
-                            <span class="sign-style">问题总的评论量： <s:property value="singleInfo.comment"/> 条</span>
+                            <span class="sign-style">问题总的评论量： <s:property value="singleInfo.list[6]"/> 条</span>
                             <div class="layui-input-block" style="display: inline-block;margin-left: 20px; min-height: inherit; vertical-align: bottom;">
 
                             </div>
@@ -197,26 +247,17 @@
 </body>
 <script src="<%=basePath %>/static/plugins/js/jquery-3.1.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath %>/static/plugins/layui/layui.js"></script>
-<script src="<%=basePath %>/static/plugins/js/echarts.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/echarts.min.js"></script>--%>
 <%--<script src="<%=basePath %>/static/js/basigleques.js"></script>--%>
 
 <script type="text/javascript">
-    layui.use(['laydate','table','laytpl','layer'], function() {
+    layui.use(['table','laytpl','layer'], function() {
         var table = layui.table;
-        var laydate = layui.laydate;
         var laytpl = layui.laytpl;
         var layer = layui.layer;
 
 
-        //初始化日期选择
-        laydate.render({
-            elem: '#browse'
-            , type: 'date'
-            , range: true
-            , done: function (value, date, endDate) {
 
-            }
-        });
         var quesId = $('#quesId').val();        //问题id
         //初始化ajax加载浏览图表
         $.ajax({
@@ -253,33 +294,6 @@
             }
         });
 
-        $("#search-brow").on('click', function () {
-            var inputDate = $("#browse").val();;
-            getBrowseByAjax(inputDate, quesId);
-        });
-
-        /**
-         * 选择日期后通过ajax动态获取数据
-         * */
-        function getBrowseByAjax(inputDate) {
-            $.ajax({
-                url: '<%=path%>/admin/qaBackQues_getBrowForDate.action'
-                , data: {'browdate': inputDate, 'qId':quesId}
-                , dataType: 'json'
-                // 返回成功的
-                , success: function (data) {
-                    if (data.status == "0") {
-                        browseChart(data);
-                    } else {
-
-                    }
-                }
-                ,complete:function() {
-                    ChangeIfmHeight();
-                }
-            });
-        }
-
         /**
          *获取到json数据对其进行组装，嵌入评论页
          * */
@@ -291,10 +305,11 @@
                 var date = new Date(item.createDate['time']).toLocaleDateString();
                 var time = new Date(item.createDate['time']).toLocaleTimeString();
                 var dateTime = date + " " + time;
+                var photo = "<%=basePath %>/"+item.headPhoto;
 
                 html = '<div class="comment">'+
                             '<a class="avatar">'+
-                                '<img src="../static/images/elliot.jpg"></a>'+
+                                '<img src="'+photo+'"></a>'+
                                     '<div class="content">'+
                                         '<a class="author">'+item.accountName+'</a>'+
                                             '<div class="metadata">'+
@@ -302,7 +317,6 @@
                                             '</div>'+
                                             '<div class="text text_style">'+item.content+'</div>'+
                                             '<div class="metadata tool_comment">'+
-                                                '<div class="rating"><i class="fa fa-thumbs-o-up">'+item.likes+'</i></div>'+
                                                 '<a class="reply getTwo" data-id="'+item.commId+'" href="javascript:;"><i class="fa fa-comments"></i>查看回复</a>'+
                                                 '<a class="reply deleteOne" data-id="'+item.commId+'" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>'+
                                             '</div>'+
@@ -315,78 +329,6 @@
 
         }
 
-        /**
-         * 浏览信息图表数据显示
-         * @param data 返回的json数据
-         */
-        function browseChart(data) {
-            var myChart1 = echarts.init(document.getElementById('browCharts'));
-
-            //按逗号分隔字符串，形成数组（too difficult !!!）
-            var dataString1 = null;
-            var t1 = data.dataString;
-            dataString1 = t1.split(",");
-
-            var browCount1 = null;
-            var t2 = data.browCount;
-            browCount1 = t2.split(",");
-
-            option1 = {
-                title: {
-                    text: '该段时间问题浏览量',
-                    subtext: '来源于数据中心'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['每日浏览量']
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        dataZoom: {
-                            yAxisIndex: 'none'
-                        },
-                        dataView: {readOnly: false},
-                        magicType: {type: ['line', 'bar']},
-                        restore: {},
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: dataString1,
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} 次'
-                    }
-                },
-                series: [
-                    {
-                        name: '访问量',
-                        type: 'line',
-                        data: browCount1,
-                        markPoint: {
-                            data: [
-                                {type: 'max', name: '最大值'},
-                                {type: 'min', name: '最小值'}
-                            ]
-                        },
-                        markLine: {
-                            data: [
-                                {type: 'average', name: '平均值'}
-                            ]
-                        }
-                    },
-                ]
-            };
-            myChart1.setOption(option1);
-
-        }
 
         $(".returnlast").on('click', function() {
             window.location.href = "<%=basePath %>/admin/qaBackQues_allQuestionView.action";

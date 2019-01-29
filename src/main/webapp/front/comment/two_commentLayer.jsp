@@ -59,12 +59,6 @@
                         <div class="detail-body  jieda-body photos" id = "re">
                                <p><s:property value="#cc.content" escape="false"/></p>
                         </div>
-                        <div class="jieda-reply">
-                              <span class="jieda-zan" type="zan">
-                                <i class="iconfont icon-zan"></i>
-                                <em><s:property value="#cc.likes"/></em>
-                              </span>
-                        </div>
                     </li>
                 </s:iterator>
             </s:else>

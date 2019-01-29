@@ -12,7 +12,6 @@ public class BaCommToQues {
     String content; // 评论内容
     Date createDate;    // 创建时间
     String accountName; // 姓名
-    BigInteger likes;   // 赞数
     String headPhoto;   // 头像
     int commentCount;   // 二级评论总数
 
@@ -49,13 +48,6 @@ public class BaCommToQues {
         this.accountName = accountName;
     }
 
-    public BigInteger getLikes() {
-        return likes;
-    }
-
-    public void setLikes(BigInteger likes) {
-        this.likes = likes;
-    }
     public String getHeadPhoto() {
         return headPhoto;
     }

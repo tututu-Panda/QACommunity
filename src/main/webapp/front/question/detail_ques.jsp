@@ -96,7 +96,6 @@
                         <span><s:date name="#tq.createDate" format="yyyy年MM月dd日 hh:mm:ss"></s:date></span>
                     </div>
                     <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                        <span style="padding-right: 10px; color: #FF7200">悬赏：60声望</span>
                         <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="">关注此贴</a></span>
                     </div>
                 </div>
@@ -238,10 +237,6 @@
                         '<p>'+item.content+'</p>'+
                         '</div>'+
                         ' <div class="jieda-reply">'+
-                        '<span class="jieda-zan" type="zan">'+
-                        '<i class="iconfont icon-zan"></i>'+
-                        '<em>'+item.likes+'</em>'+
-                        '</span>'+
                         '<span type="reply" class="getTwoComm" data-id="'+item.commId+'">'+
                        count+
                         '</span>'+
