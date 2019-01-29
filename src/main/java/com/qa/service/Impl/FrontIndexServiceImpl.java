@@ -50,22 +50,22 @@ public class FrontIndexServiceImpl implements FrontIndexService{
             bq.setAccountName((String)object[6]);
             bq.setHeadPhoto((String)object[7]);
             bq.setCommentCount((BigInteger) object[8]);
-            bq.setBrowseCount((int)object[9]);
+//            bq.setBrowseCount((int)object[9]);
 
-//            // redis获取该问题id的浏览量,如果没有再进行查询添加
-//            if(redisTemplate.opsForValue().get(("shadow:views_"+object[0])) != null){
-//                System.out.println("获取缓存---");
-//                bq.setBrowseCount((int) redisTemplate.opsForValue().get(("views_"+object[0])));
-//            }else{
-//                System.out.println("添加缓存----");
-//                // 查询浏览量,并存入redis
-//                int views = frontIndexDao.getViews((Integer) object[0]);
-//                // 设置一个shadowkey用户过期事件回调
-//                // 在回调事件中,通过key并同步到数据库中
-//                redisTemplate.opsForValue().set("shadow:views_"+object[0],"",1, TimeUnit.DAYS);
-//                redisTemplate.opsForValue().set("views_"+object[0],views);
-//                bq.setBrowseCount(views);
-//            }
+            // redis获取该问题id的浏览量,如果没有再进行查询添加
+            if(redisTemplate.opsForValue().get(("shadow:views_"+object[0])) != null){
+                System.out.println("获取缓存---");
+                bq.setBrowseCount((int) redisTemplate.opsForValue().get(("views_"+object[0])));
+            }else{
+                System.out.println("添加缓存----");
+                // 查询浏览量,并存入redis
+                int views = frontIndexDao.getViews((Integer) object[0]);
+                // 设置一个shadowkey用户过期事件回调
+                // 在回调事件中,通过key并同步到数据库中
+                redisTemplate.opsForValue().set("shadow:views_"+object[0],"",1, TimeUnit.DAYS);
+                redisTemplate.opsForValue().set("views_"+object[0],views);
+                bq.setBrowseCount(views);
+            }
 
             questionList.add(bq);
         }
