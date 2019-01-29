@@ -174,6 +174,7 @@ public class FrontUserAction extends BaseAction {
 
         // 获取值栈对象
         ValueStack valueStack = ServletActionContext.getContext().getValueStack();
+        valueStack.set("page",page);
         valueStack.set("count",count);
         valueStack.set("list",list);
         return "userIndex";

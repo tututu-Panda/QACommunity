@@ -80,25 +80,10 @@
               </li>
             </s:iterator>
 
-            <%--<li>--%>
-              <%--<a class="ji../../res/mods/e-title" href="../jie/detail.html" target="_blank">基于 layui 的极简社区页面模版</a>--%>
-              <%--<i>2017/3/14 上午8:30:00</i>--%>
-              <%--<a class="mine-edit" href="/jie/edit/8116">编辑</a>--%>
-              <%--<em>661阅/10答</em>--%>
-            <%--</li>--%>
 
           </ul>
-          <div id="LAY_page"></div>
         </div>
-
-        <div class="layui-tab-item">
-          <ul class="mine-view jie-row">
-            <li>
-              <a class="jie-title" href="../jie/detail.html" target="_blank">基于 layui 的极简社区页面模版</a>
-              <i>收藏于23小时前</i>  </li>
-          </ul>
-          <div id="laypage"></div>
-        </div>
+          <div id="pages"></div>
 
       </div>
     </div>
@@ -111,14 +96,29 @@
 <script>
     layui.use(['element','laypage'], function() {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-        laypage = layui.laypage;
+        var laypage = layui.laypage;
 
+        console.log(<s:property value="count" />);
+        var curr = <s:property value="page" />;
         laypage.render({
-            elem: 'laypage' //注意，这里的 test1 是 ID，不用加 # 号
-            ,count: 50 //数据总数，从服务端得到
+            elem: 'pages' //注意，这里的是 ID，不用加 # 号
+            ,count: <s:property value="count" /> //数据总数，从服务端得到
+            ,limit: 10
+            ,curr: curr
+            ,group:6
+            ,theme: '#1E9FFF'
+            ,jump: function(obj, first) {
+                var curr = obj.curr;
+                if(!first) {
+                    window.location.href = "<%=basePath %>/frontUser/FrontUser_userIndex.action?page="+curr;
+                }
+            }
         });
 
     });
+
+
+
 </script>
 
 </body>

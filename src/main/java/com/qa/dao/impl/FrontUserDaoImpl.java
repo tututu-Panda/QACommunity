@@ -84,7 +84,6 @@ public class FrontUserDaoImpl implements FrontUserDao {
 
         int limit = 10;     // 每页显示10个
         int firstRe = 0;    // 第一个数据
-        int lastRe = 0;     // 最后一个数据
         int count = 0;      // 总的问题个数
 
         Map map = new HashMap();
@@ -94,14 +93,13 @@ public class FrontUserDaoImpl implements FrontUserDao {
         query.setInteger(0,id);
 
         firstRe = (page - 1) * limit;
-        lastRe = firstRe + limit;
 
         // 总的个数
         count = query.list().size();
 
         // 分页
         query.setFirstResult(firstRe);
-        query.setMaxResults(lastRe);
+        query.setMaxResults(limit);
 
         // 问题集合
         ArrayList l = (ArrayList) query.list();
