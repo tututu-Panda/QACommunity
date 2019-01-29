@@ -96,7 +96,7 @@
                         <span><s:date name="#tq.createDate" format="yyyy年MM月dd日 hh:mm:ss"></s:date></span>
                     </div>
                     <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                        <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="">关注此贴</a></span>
+                        <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="<%=basePath %>/frontUser/FrontUser_userHome.action?id=<s:property value="#tq.Id" />">查看信息</a></span>
                     </div>
                 </div>
                 <div class="detail-body photos">
