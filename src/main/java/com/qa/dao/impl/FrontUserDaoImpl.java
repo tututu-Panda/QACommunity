@@ -214,7 +214,7 @@ public class FrontUserDaoImpl implements FrontUserDao {
      */
     @Override
     public ArrayList getUserInfo(int id) {
-        String hql = "select name, sex, photo, createDate from QaFrontUser where id = "+id;
+        String hql = "select name, sex, photo, createDate, status, comment from QaFrontUser where id = "+id;
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         return (ArrayList) query.list();
     }

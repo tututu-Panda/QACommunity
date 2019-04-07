@@ -114,20 +114,30 @@
 
                 <% if(frontUser != null){ %>
                 <%--回复框--%>
-                <div class="layui-form layui-form-pane">
-                    <form action="" method="post">
-                        <div class="layui-form-item layui-form-text">
-                            <a name="comment"></a>
-                            <div class="layui-input-block">
-                                <textarea id="L_content" name="content" ></textarea>
+                <%
+                    int st = (int) frontUser.get("status");
+                    if(st == 1){
+                %>
+                    <div class="layui-form layui-form-pane">
+                        <form action="" method="post">
+                            <div class="layui-form-item layui-form-text">
+                                <a name="comment"></a>
+                                <div class="layui-input-block">
+                                    <textarea id="L_content" name="content"   ></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <input type="hidden" name="jid" value="123">
-                            <button class="layui-btn" lay-filter="reply_one" lay-submit>提交回复</button>
-                        </div>
-                    </form>
-                </div>
+                            <div class="layui-form-item">
+                                <input type="hidden" name="jid" value="123">
+                                <button class="layui-btn" lay-filter="reply_one" lay-submit>提交回复</button>
+                            </div>
+                        </form>
+                    </div>
+                <%
+                    }else{
+                %>
+                    <blockquote class="layui-elem-quote">您已被禁止发言</blockquote>
+                   <% }
+                %>
                 <%--回复框--%>
                 <% }else {%>
                 <p class="" style="margin-left:37%">若要回复，请先 <a href="<%=path %>/frontUser/FrontUser_UserLogin.action" class="login-style">登录</a>
@@ -207,6 +217,7 @@
         function getComment_one(data) {
             var commList = data.commList;
             var html;
+            var st = <%=frontUser.get("status")%>;
             if(commList.length != 0) {
 
                 $.each(commList, function(index, item) {
@@ -245,9 +256,11 @@
                         '</div>'+
                         '</div>'+
                         '</li>';
-
                     $("#jieda").append(html);
                 });
+                if(st === 0){
+                    $(".jieda-admin").hide();
+                }
             }else {
                     html = '<p style="margin-top:30px;margin-left:37%">:( 暂无评论喔~~~,  &nbsp;快来抢沙发吧！</p>';
                     $("#jieda").append(html);

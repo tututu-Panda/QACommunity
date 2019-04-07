@@ -45,7 +45,14 @@
                 <dl class="layui-nav-child">
                     <dd><a href="<%=basePath %>/frontUser/FrontUser_userIndex.action"><i class="layui-icon">&#xe620;</i>用户中心</a></dd>
                     <dd><a href="<%=basePath %>/frontUser/FrontUser_userHome.action"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
-                    <dd><a href="<%=basePath %>/front/frontQuestion_addQuestion.action"><i class="layui-icon">&#xe609;</i>发布问题</a></dd>
+                    <%
+                        int st = (int) frontUser.get("status");
+                        if (st == 1){
+                    %>
+                        <dd><a href="<%=basePath %>/front/frontQuestion_addQuestion.action"><i class="layui-icon">&#xe609;</i>发布问题</a></dd>
+                    <%
+                        }
+                    %>
                     <hr style="margin: 5px 0;">
                     <dd id="logout"><a style="text-align: center;">退出</a></dd>
                 </dl>

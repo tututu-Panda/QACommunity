@@ -13,10 +13,12 @@
     <context:component-scan base-package="com.qa.action"/>
     <context:component-scan base-package="com.qa.service"/>
     <context:component-scan base-package="com.qa.dao" />
+    <context:component-scan base-package="com.qa.aop" />
 
     <!--aop切面-->
     <aop:aspectj-autoproxy/>
-    <bean id="log" class="com.qa.aop.SystemLogAspect"/>
+    <bean id="talk" class="com.qa.aop.TalkAspect"/>
+    <!--<bean id="log" class="com.qa.aop.SystemLogAspect"/>-->
 
     <!-- data connection setting -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

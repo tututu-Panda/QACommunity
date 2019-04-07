@@ -52,6 +52,8 @@ public class FrontUserServiceImpl implements FrontUserService {
             m.put("photo",b.getPhoto());
             m.put("phone",b.getPhone());
             m.put("createDate",b.getCreateDate());
+            m.put("status",b.getStatus());
+            m.put("comment",b.getComment());
         }
         return m;
     }

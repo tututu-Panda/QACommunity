@@ -52,7 +52,12 @@
     <div class="fly-sns" data-user="">
         <%--<a href="javascript:;" class="layui-btn layui-btn-primary fly-imActive" data-type="addFriend">开发功能</a>--%>
         <s:if test="home == 1">
+            <s:if test="userinfo[4] == 1">
             <a href="<%=path%>/front/frontQuestion_addQuestion.action" class="layui-btn layui-btn-normal fly-imActive" data-type="chat">发布问题</a>
+            </s:if>
+            <s:else>
+                <button data-method="offset" data-type="auto" class="layui-btn layui-btn-danger reason">已被禁言</button>
+            </s:else>
         </s:if>
     </div>
 
@@ -102,3 +107,18 @@
 
 </body>
 </html>
+<script>
+    layui.use(['element'], function() {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        var content = '<s:property value="userinfo[5]"/>';
+            console.log(content);
+        $(".reason").on('click', function() {
+            layer.msg(content, {
+                icon: 5,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            }, function(){
+            });
+        });
+    });
+
+</script>

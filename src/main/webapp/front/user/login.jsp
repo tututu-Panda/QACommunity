@@ -11,7 +11,7 @@
   Map frontUser = (Map) session.getAttribute("frontUser");
   String url = (String) session.getAttribute("goURL");
   if(url == null)
-      url = "/frontUser/FrontUser_userSet.action";
+      url = "/frontUser/FrontUser_userHome.action";
 
 %>
 
