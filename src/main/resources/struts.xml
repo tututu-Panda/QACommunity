@@ -91,7 +91,7 @@
             <result name="list" type="json">
                 <param name="root">info</param>
             </result>
-            <result name="delete" type="json">
+            <result name="ban" type="json">
                 <param name="root">status</param>
             </result>
             <result name="update" type="json">
@@ -99,6 +99,8 @@
             </result>
             <result name="communityList">/admin/community.jsp</result>
             <result name="editUser">/admin/edit_community.jsp</result>
+            <result name="banComUser">/admin/banComUser.jsp</result>
+            <result name="cancelBanComUser">/admin/cancelBanComUser.jsp</result>
         </action>
 
 

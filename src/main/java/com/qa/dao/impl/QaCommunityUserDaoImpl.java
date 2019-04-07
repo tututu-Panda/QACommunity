@@ -96,13 +96,14 @@ public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
 
     /**
      *
-     * 描述： 删除用户集合
+     * 描述： 禁言用户集合
     */
     @Override
-    public boolean deleteComUser(List<Integer> ids) {
+    public boolean banComUser(List<Integer> ids,String comment) {
         boolean b = false;
-        String hql = "Delete from QaFrontUser where id in (:ids)";
+        String hql = "update QaFrontUser u set u.status=0,u.comment=?  where id in (:ids)";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString(0,comment);
 
         int result = query.setParameterList("ids", ids).executeUpdate();
         if(result != 0){
@@ -140,6 +141,21 @@ public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
         query.setInteger(0,id);
         QaFrontUser user = (QaFrontUser) query.list().get(0);
         return user;
+    }
+
+
+    // 解除用户禁言
+    @Override
+    public boolean banComUser(List<Integer> ids) {
+        boolean b = false;
+        String hql = "update QaFrontUser u set u.status=1  where id in (:ids)";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        int result = query.setParameterList("ids", ids).executeUpdate();
+        if(result != 0){
+            b = true;
+        }
+        return b;
     }
 
 

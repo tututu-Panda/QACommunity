@@ -10,17 +10,8 @@
 <link type="text/css" href="<%=basePath %>/static/plugins/layui/css/layui.css" rel="stylesheet" />
 
 <style>
-    .layui-btn-sm{
-        background-color: #11bfe3;
-    }
-    .layui-btn-warm{
-        background-color: #FFB800;
-    }
-    .layui-elem-quote{
-        border-left: 5px solid #11bfe3;
-        border-radius: 4px;
-        background-color: #fff;
-    }
+
+
     .log{
         border-radius: 4px;
         background-color: #fff;
@@ -68,7 +59,8 @@
             <legend>用户列表</legend>
             <div class="layui-field-box">
                 <div class="layui-btn-group">
-                    <button class="layui-btn layui-btn-sm" id="delChoose">删除选中行数据</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="delChoose">禁言选中行用户</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-warm" id="cancelDelChoose" style="padding-left: 20px">解除禁言选中行用户</button>
                 </div>
                 <table id="demo" lay-filter="community"></table>
             </div>
@@ -100,7 +92,14 @@
 <script src="<%=basePath %>/static/plugins/layui/layui.all.js"></script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-bheighttn-warm layui-btn-sm" lay-event="alter">修改</a>
-    <a class="layui-btn layui-btn-sm layui-bheighttn-warm"  lay-event="del">删除</a>
+    {{#  if(d.status == 0){ }}
+    <a class="layui-btn layui-btn-sm layui-btn-warm"  lay-event="cancelDel">
+            解除禁言
+        {{#  } else  if(d.status == 1) { }}
+    <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="del">
+            禁言
+        {{#  } }}
+    </a>
 
 
 </script>
@@ -184,92 +183,206 @@
 
 
 
-        // 删除选择
+        // 禁言选择
         $("#delChoose").on("click",function(){
-            layer.confirm("确定删除选择的所有日志吗?",function(index) {
-                // 获取选中的对象
-                var checkStatus = table.checkStatus('table_community');
-                // 得到对象中的数据
-                var chooseData = checkStatus.data;
-                // 创建一个id集,传给后台
-                var ids = [];
-                // 遍历取出id
-                for (var i = 0; i < chooseData.length; i++) {
-                    // console.log(chooseData[i].id);
-                    ids.push(chooseData[i].id);
-                }
-                console.log(ids);
-                $.ajax({
-                    url: '<%=path%>/admin/qaCommunity_delComUser.action'
-                    ,traditional:true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
-                    ,data:{"id":ids}
-                    ,dataType:'json'
-                    // 返回成功的
-                    ,success:function(data){
-                        if(data.status == "0"){
-                            layer.msg("删除失败!!",{
-                                icon:2,
-                                timeout:2000
-                            },function () {
-                                location.reload();
-                            });
-                        }else{
-                            layer.msg("删除成功!",{
-                                icon:1,
-                                timeout:2000
-                            },function(){
-                                location.reload();
-                            });
-                        }
+            layer.confirm("确定禁言选择的所有用户吗?",function(index) {
+                layer.prompt( ({title: '请输入被禁原因:'}),function(value) {
+                    // 获取选中的对象
+                    var checkStatus = table.checkStatus('table_community');
+                    // 得到对象中的数据
+                    var chooseData = checkStatus.data;
+                    // 创建一个id集,传给后台
+                    var ids = [];
+                    // 遍历取出id
+                    for (var i = 0; i < chooseData.length; i++) {
+                        // console.log(chooseData[i].id);
+                        ids.push(chooseData[i].id);
                     }
-                    // 超时
-                    , timeout:function(){
-                        layer.msg("请求超时!",{
-                            icon:2,
-                            timeout:2000
-                        },function(){
-                            location.reload();
-                        });
-                    }
-                    // 错误
-                    , error:function(){
-                        layer.msg("发生错误!请与管理员联系!",{
-                            icon:2,
-                            timeout:2000
-                        },function () {
-                            location.reload();
-                        });
-                    }
-
-                })
-            });
-
-        });
-
-
-        // 监听工具条
-        table.on('tool(community)',function(obj){
-            var data = obj.data;
-            var layEvent = obj.event;
-            // 删除事件
-            if(layEvent === "del") {
-                layer.confirm("确定删除吗?", function (index) {
-                    console.log(data);
+                    console.log(ids);
                     $.ajax({
-                        url: '<%=path%>/admin/qaCommunity_delComUser.action'
-                        , data: {"id": data.id}
+                        url: '<%=path%>/admin/qaCommunity_banComUser.action'
+                        , traditional: true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
+                        , data: {"id": ids,"comment":value}
                         , dataType: 'json'
                         // 返回成功的
                         , success: function (data) {
                             if (data.status == "0") {
-                                layer.msg("删除失败!!", {
+                                layer.msg("禁言失败!!", {
                                     icon: 2,
                                     timeout: 2000
                                 }, function () {
                                     location.reload();
                                 });
                             } else {
-                                layer.msg("删除成功!", {
+                                layer.msg("禁言成功!", {
+                                    icon: 1,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            }
+                        }
+                        // 超时
+                        , timeout: function () {
+                            layer.msg("请求超时!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                        // 错误
+                        , error: function () {
+                            layer.msg("发生错误!请与管理员联系!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+
+                    })
+                });
+            });
+
+        });
+
+
+        // 解除禁言选择
+        $("#cancelDelChoose").on("click",function(){
+            layer.confirm("确定解除禁言选择的所有用户吗?",function(index) {
+                    // 获取选中的对象
+                    var checkStatus = table.checkStatus('table_community');
+                    // 得到对象中的数据
+                    var chooseData = checkStatus.data;
+                    // 创建一个id集,传给后台
+                    var ids = [];
+                    // 遍历取出id
+                    for (var i = 0; i < chooseData.length; i++) {
+                        // console.log(chooseData[i].id);
+                        ids.push(chooseData[i].id);
+                    }
+                    console.log(ids);
+                    $.ajax({
+                        url: '<%=path%>/admin/qaCommunity_cancelBanComUser.action'
+                        , traditional: true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
+                        , data: {"id": ids}
+                        , dataType: 'json'
+                        // 返回成功的
+                        , success: function (data) {
+                            if (data.status == "0") {
+                                layer.msg("解除禁言失败!!", {
+                                    icon: 2,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg("解除禁言成功!", {
+                                    icon: 1,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            }
+                        }
+                        // 超时
+                        , timeout: function () {
+                            layer.msg("请求超时!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                        // 错误
+                        , error: function () {
+                            layer.msg("发生错误!请与管理员联系!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+
+                    })
+            });
+
+        });
+
+
+
+        // 监听工具条
+        table.on('tool(community)',function(obj){
+            var data = obj.data;
+            var layEvent = obj.event;
+            // 禁言事件
+            if(layEvent === "del") {
+                layer.confirm("确定禁言吗?", function (index) {
+                    layer.prompt( ({title: '请输入被禁原因:'}),function(value) {
+                        $.ajax({
+                            url: '<%=path%>/admin/qaCommunity_banComUser.action'
+                            , data: {"id": data.id,"comment":value}
+                            , dataType: 'json'
+                            // 返回成功的
+                            , success: function (data) {
+                                if (data.status == "0") {
+                                    layer.msg("禁言失败!!", {
+                                        icon: 2,
+                                        timeout: 2000
+                                    }, function () {
+                                        location.reload();
+                                    });
+                                } else {
+                                    layer.msg("禁言成功!", {
+                                        icon: 1,
+                                        timeout: 2000
+                                    }, function () {
+                                        location.reload();
+                                    });
+                                }
+                            }
+                            // 超时
+                            , timeout: function () {
+                                layer.msg("请求超时!", {
+                                    icon: 2,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            }
+                            // 错误
+                            , error: function () {
+                                layer.msg("发生错误!请与管理员联系!", {
+                                    icon: 2,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+
+            // 解禁事件
+            if(layEvent == 'cancelDel'){
+                layer.confirm("确定解除禁言吗?", function (index) {
+                    $.ajax({
+                        url: '<%=path%>/admin/qaCommunity_cancelBanComUser.action'
+                        , data: {"id": data.id}
+                        , dataType: 'json'
+                        // 返回成功的
+                        , success: function (data) {
+                            if (data.status == "0") {
+                                layer.msg("解除禁言失败!!", {
+                                    icon: 2,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg("解除禁言成功!", {
                                     icon: 1,
                                     timeout: 2000
                                 }, function () {
@@ -296,7 +409,6 @@
                             });
                         }
                     });
-
                 });
             }
 

@@ -111,6 +111,24 @@
                         </ul>
                     </div>
                 </li>
+
+                <li>
+                    <a data-toggle="collapse" href="#checksExamples">
+                        <i class="pe-7s-gift"></i>
+                        <p>审核管理
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="checksExamples">
+                        <ul class="nav">
+                            <li><a href="<%=basePath%>/admin/qaLog_logList.action"  target="iframepage">账号审核</a></li>
+                            <li><a href="<%=basePath%>/admin/qaLog_logList.action"  target="iframepage">内容审核</a></li>
+                            <li><a href="<%=basePath%>/admin/qaLog_logList.action"  target="iframepage">回复审核</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+
                 <li>
                     <a data-toggle="collapse" href="#tablesExamples">
                         <i class="pe-7s-news-paper"></i>

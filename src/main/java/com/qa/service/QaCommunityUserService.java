@@ -16,9 +16,11 @@ public interface QaCommunityUserService {
 
     public Map getComUserList(String pages, String limit, String name, String[] rangeDate);
 
-    public boolean deleteLog(List<Integer> ids);
+    public boolean banLog(List<Integer> ids,String comment);
 
     public boolean updateUser(QaFrontUser user);
 
     QaFrontUser findById(int id);
+
+    boolean cancelBanLog(List<Integer> ids);
 }

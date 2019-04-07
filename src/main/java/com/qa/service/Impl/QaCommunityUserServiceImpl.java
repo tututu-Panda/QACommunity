@@ -35,9 +35,9 @@ public class QaCommunityUserServiceImpl implements QaCommunityUserService {
     }
 
     @Override
-    public boolean deleteLog(List<Integer> ids) {
+    public boolean banLog(List<Integer> ids,String comment) {
         boolean istrue;
-        istrue = qaCommunityUserDao.deleteComUser(ids);
+        istrue = qaCommunityUserDao.banComUser(ids,comment);
         return istrue;
     }
 
@@ -53,5 +53,10 @@ public class QaCommunityUserServiceImpl implements QaCommunityUserService {
         QaFrontUser user;
         user = qaCommunityUserDao.findById(id);
         return user;
+    }
+
+    @Override
+    public boolean cancelBanLog(List<Integer> ids) {
+        return qaCommunityUserDao.banComUser(ids);
     }
 }

@@ -3,6 +3,7 @@ package com.qa.entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by InterlliJ IDEA.
@@ -23,6 +24,8 @@ public class QaFrontUser {
     private String email;
     private Date createDate;
     private int status;
+
+    private String comment;
 
 
     @Id
@@ -120,6 +123,17 @@ public class QaFrontUser {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "comment", nullable = false)
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,6 +144,7 @@ public class QaFrontUser {
         if (id != that.id) return false;
         if (sex != that.sex) return false;
         if (status != that.status) return false;
+        if (!Objects.equals(comment, that.comment)) return false;
         if (account != null ? !account.equals(that.account) : that.account != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -152,6 +167,7 @@ public class QaFrontUser {
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + status;
         return result;
     }

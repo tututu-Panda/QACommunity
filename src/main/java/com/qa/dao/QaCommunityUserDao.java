@@ -12,9 +12,11 @@ public interface QaCommunityUserDao {
 
     public Map getCommunityUserList(String pages, String limit, String name, String[] rangeDate);
 
-    boolean deleteComUser(List<Integer> ids);
+    boolean banComUser(List<Integer> ids,String comment);
 
     boolean updateUser(QaFrontUser user);
 
     QaFrontUser findById(int id);
+
+    boolean banComUser(List<Integer> ids);
 }

@@ -106,12 +106,40 @@ public class QaCommunityUserAction extends BaseAction {
 
     /**
      *
-     * 描述： 删除用户集合
+     * 描述： 禁言用户集合
     */
-    public String delComUser(){
+    public String banComUser(){
         Map<String, Object> map = new HashMap<String, Object>();    // 定义map集合存如入返回json的集合
         String[] list;                 // 请求的id集合
-        boolean istrue;
+        boolean istrue=false;
+
+        // 获得请求参数
+        Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
+        list = ((String []) params.get("id"));
+        String[] comment = (String[]) params.get("comment");
+
+        // 转换为List集合
+        List<Integer> ids = new ArrayList<Integer>();
+        for (int j = 0; j < list.length; j++) {
+            ids.add(Integer.parseInt(list[j]));
+        }
+
+        // 得到返回的数字
+        istrue = qaCommunityUserService.banLog(ids,comment[0]);
+
+        if(istrue){
+            map.put("status","1");
+        }else{
+            map.put("status","0");
+        }
+        status = JSONObject.fromObject(map);
+        return "ban";
+    }
+
+
+    public String cancelBanComUser(){
+        Map<String, Object> map = new HashMap<String, Object>();    // 定义map集合存如入返回json的集合
+        String[] list;                 // 请求的id集合
 
         // 获得请求参数
         Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
@@ -124,7 +152,7 @@ public class QaCommunityUserAction extends BaseAction {
         }
 
         // 得到返回的数字
-        istrue = qaCommunityUserService.deleteLog(ids);
+        boolean istrue = qaCommunityUserService.cancelBanLog(ids);
 
         if(istrue){
             map.put("status","1");
@@ -132,9 +160,9 @@ public class QaCommunityUserAction extends BaseAction {
             map.put("status","0");
         }
         status = JSONObject.fromObject(map);
-        return "delete";
-    }
+        return "ban";
 
+    }
 
 
     /**updateUser
