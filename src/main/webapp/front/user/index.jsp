@@ -65,6 +65,7 @@
 
       <ul class="layui-tab-title" id="LAY_mine">
         <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖（<span><s:property value="count"/></span>）</li>
+        <li data-type="mine-jie" lay-id="index" class="layui ">正在审核的帖（<span><s:property value="count2"/></span>）</li>
       </ul>
 
       <div class="layui-tab-content" style="padding: 20px 0;">
@@ -82,8 +83,22 @@
 
 
           </ul>
-        </div>
           <div id="pages"></div>
+        </div>
+        <div class="layui-tab-item">
+            <ul class="mine-view jie-row">
+                <s:iterator value="list2" id="question" status="st2">
+                    <li>
+                        <span class="jie-title" ><s:property value="list2[#st2.index][1]"/></span>
+                        <i><s:date name="list2[#st2.index][2]"/></i>
+                        <a class="mine-edit" href="<%=basePath %>/front/frontQuestion_editQuestion?q_id=<s:property value="list2[#st2.index][0]"/>">编辑</a>
+                    </li>
+                </s:iterator>
+
+            </ul>
+
+          <div id="pages2"></div>
+        </div>
 
       </div>
     </div>
@@ -98,11 +113,12 @@
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var laypage = layui.laypage;
 
-        console.log(<s:property value="count" />);
+        <%--console.log(<s:property value="count" />);--%>
         var curr = <s:property value="page" />;
-        laypage.render({
+        var count = <s:property value="count" />;
+        var fir = laypage.render({
             elem: 'pages' //注意，这里的是 ID，不用加 # 号
-            ,count: <s:property value="count" /> //数据总数，从服务端得到
+            ,count: count //数据总数，从服务端得到
             ,limit: 10
             ,curr: curr
             ,group:6
@@ -114,6 +130,23 @@
                 }
             }
         });
+        var two = laypage.render({
+            elem: 'pages2' //注意，这里的是 ID，不用加 # 号
+            ,count: count //数据总数，从服务端得到
+            ,limit: 10
+            ,curr: curr
+            ,group:6
+            ,theme: '#1E9FFF'
+            ,jump: function(obj, first) {
+                var curr = obj.curr;
+                if(!first) {
+                    window.location.href = "<%=basePath %>/frontUser/FrontUser_userIndex.action?page="+curr;
+                }
+            }
+        });
+
+
+
 
     });
 

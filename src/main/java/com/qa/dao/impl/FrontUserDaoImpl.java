@@ -88,10 +88,9 @@ public class FrontUserDaoImpl implements FrontUserDao {
 
         Map map = new HashMap();
 
-        String hql = "select qq.qId, qq.title, qq.createDate FROM QaQuestion qq where createUser = ? order by createDate desc";
+        String hql = "select qq.qId, qq.title, qq.createDate FROM QaQuestion qq where checked = 0 and createUser = ?  order by createDate desc";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setInteger(0,id);
-
         firstRe = (page - 1) * limit;
 
         // 总的个数
@@ -217,5 +216,39 @@ public class FrontUserDaoImpl implements FrontUserDao {
         String hql = "select name, sex, photo, createDate, status, comment from QaFrontUser where id = "+id;
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         return (ArrayList) query.list();
+    }
+
+
+    /**
+     * 获取用户正在审核的帖子
+     * @param id
+     * @param page
+     * @return
+     */
+    @Override
+    public Map getCheckedQuestionByUser(Integer id, Integer page) {
+        int limit = 10;     // 每页显示10个
+        int firstRe = 0;    // 第一个数据
+        int count = 0;      // 总的问题个数
+
+        Map map = new HashMap();
+
+        String hql = "select qq.qId, qq.title, qq.createDate FROM QaQuestion qq where checked = 1 and createUser = ?  order by createDate desc";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setInteger(0,id);
+        firstRe = (page - 1) * limit;
+
+        // 总的个数
+        count = query.list().size();
+
+        // 分页
+        query.setFirstResult(firstRe);
+        query.setMaxResults(limit);
+
+        // 问题集合
+        ArrayList l = (ArrayList) query.list();
+        map.put("list",l);
+        map.put("count",count);
+        return map;
     }
 }

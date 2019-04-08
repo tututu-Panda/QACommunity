@@ -38,6 +38,8 @@ public class FrontUserAction extends BaseAction {
     private String fileFileName;              //得到文件的名称，写法是固定的
     private String fileContentType;           // 上传文件的类型
 
+    private Map checkedMap;
+
     // 注册页面
     public String registerUser(){
         return "register";
@@ -169,14 +171,22 @@ public class FrontUserAction extends BaseAction {
         Integer page = Integer.valueOf(pages);
 
         Map result = frontUserService.getQuestionByUser((Integer) user.get("id"),page);
+        Map result2 = frontUserService.getCheckedQuestionByUser((Integer) user.get("id"),page);     // 用户正在审核的帖子
+
+
         int count = (Integer) result.get("count");
+        int count2 = (Integer) result2.get("count");
+        System.out.println("审核======"+count2);
         ArrayList list = (ArrayList) result.get("list");
+        ArrayList list2 = (ArrayList) result2.get("list");
 
         // 获取值栈对象
         ValueStack valueStack = ServletActionContext.getContext().getValueStack();
         valueStack.set("page",page);
         valueStack.set("count",count);
+        valueStack.set("count2",count2);
         valueStack.set("list",list);
+        valueStack.set("list2",list2);
         return "userIndex";
     }
 
@@ -438,5 +448,13 @@ public class FrontUserAction extends BaseAction {
 
     public void setFileContentType(String fileContentType) {
         this.fileContentType = fileContentType;
+    }
+
+    public Map getCheckedMap() {
+        return checkedMap;
+    }
+
+    public void setCheckedMap(Map checkedMap) {
+        this.checkedMap = checkedMap;
     }
 }

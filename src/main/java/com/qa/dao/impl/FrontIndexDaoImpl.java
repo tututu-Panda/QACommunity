@@ -65,6 +65,7 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
                     " left join qa_front_user t3 on t1.create_user=t3.id" +
                     " left join qa_comment t4 on t1.q_id=t4.question_id" +
                     " where t1.topic_id = "+topic+
+                    " and t1.checked = 0 "+
                     " group by t1.q_id order by "+orderString+" desc ";
         }
 
@@ -77,6 +78,7 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
                     " left join qa_topic t2 on t1.topic_id=t2.to_id" +
                     " left join qa_front_user t3 on t1.create_user=t3.id" +
                     " left join qa_comment t4 on t1.q_id=t4.question_id" +
+                    " where t1.checked = 0  " +
                     " group by t1.q_id order by "+orderString+" desc";
         }
 
@@ -179,9 +181,9 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
     @Override
     public List gerRandomQues() {
         int limit = 5;
-        String hql = " SELECT q_id , title FROM qa_question WHERE q_id >=" +
+        String hql = " SELECT q_id , title FROM qa_question WHERE checked = 0 AND q_id >=" +
                 " ((SELECT MAX(q_id) FROM qa_question)-(SELECT MIN(q_id) FROM qa_question)) * RAND() " +
-                "+ (SELECT MIN(q_id) FROM qa_question)  LIMIT ?";
+                "+ (SELECT MIN(q_id) FROM qa_question)  LIMIT ? ";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(hql);
         query.setInteger(0,limit);
         return query.list();

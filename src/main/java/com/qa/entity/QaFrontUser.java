@@ -124,7 +124,7 @@ public class QaFrontUser {
     }
 
     @Basic
-    @Column(name = "comment", nullable = false)
+    @Column(name = "comment", nullable = true)
     public String getComment() {
         return comment;
     }

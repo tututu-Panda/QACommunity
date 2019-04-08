@@ -17,6 +17,7 @@ public class QaQuestion {
     private Date createDate;
     private int createUser;
     private int views;
+    private int checked;
     // 问题与话题是多对一的关系
     private QaTopic topic;
     // 问题与用户是多对一的关系
@@ -100,6 +101,16 @@ public class QaQuestion {
 
     public void setViews(int views) {
         this.views = views;
+    }
+
+    @Basic
+    @Column(name = "checked" , length = 11)
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int checked) {
+        this.checked = checked;
     }
 
     @Override

@@ -33,4 +33,6 @@ public interface FrontUserService {
     ArrayList getCommentByUser(int id);
 
     ArrayList getUserInfo(int id);
+
+    Map getCheckedQuestionByUser(Integer id, Integer page);
 }

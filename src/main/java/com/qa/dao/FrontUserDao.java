@@ -28,4 +28,6 @@ public interface FrontUserDao {
     List getCommentByUser(int id);
 
     Object getUserInfo(int id);
+
+    Map getCheckedQuestionByUser(Integer id, Integer page);
 }

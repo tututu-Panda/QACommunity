@@ -106,4 +106,9 @@ public class FrontUserServiceImpl implements FrontUserService {
         ArrayList userinfo = (ArrayList) frontUserDao.getUserInfo(id);
         return userinfo;
     }
+
+    @Override
+    public Map getCheckedQuestionByUser(Integer id, Integer page) {
+        return frontUserDao.getCheckedQuestionByUser(id,page);
+    }
 }
