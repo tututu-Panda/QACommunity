@@ -73,7 +73,7 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         String sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.label_ids as labelIds,t1.create_date as createDate,t2.to_id as toId,t2.topic_name as topicName," +
                 "t3.account as account,t3.name as accountName from qa_question as t1 " +
                 " left join qa_topic t2 on t1.topic_id=t2.to_id" +
-                " left join qa_front_user t3 on t1.create_user=t3.id where t1.create_date BETWEEN  ? and ?";
+                " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = 0 AND t1.create_date BETWEEN  ? and ?";
 
 //        String sql = "from QaQuestion  t1 left  join t1.topicId left  join fetch t1.createUser where t1.createUser between ? and ?";
 
@@ -282,6 +282,119 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setString(0, "%"+l_id+"%");
         return query.list().size() != 0;
+    }
+
+
+    /**
+     * 获取审核列表
+     * @param page
+     * @param limits
+     * @param rangeDate
+     * @param check
+     * @return
+     */
+    @Override
+    public Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check) {
+        int firstRe = 0;            // 查询的第一个结果
+        int count = 0;              // 查询到总数
+        int pages = page - 1;           //页码
+        Timestamp times[] = new Timestamp[2];   // 定义时间参数
+
+        if(rangeDate[0].equals("")){
+            times[0] = Timestamp.valueOf("1999-01-01 00:00:00");
+            times[1] = new Timestamp(new Date().getTime());
+        }else{
+            times[0] = Timestamp.valueOf(rangeDate[0]);
+            times[1] = Timestamp.valueOf(rangeDate[1]);
+        }
+
+        Map map = new HashMap();
+        /*因为没有建立外键，所以不用hql实现；
+         * 此处书写原生sql语句进行查询，注意sql语句的书写正确；
+         * 左连接-连表查出问题列表并且查询各个问题的所属话题以及创建用户
+         */
+        String sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.create_date as createDate,t1.checked as checked , t2.to_id as toId,t2.topic_name as topicName," +
+                "t3.account as account,t3.name as accountName from qa_question as t1 " +
+                " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = ? AND t1.create_date BETWEEN  ? and ? order BY  t1.checked";
+
+//        String sql = "from QaQuestion  t1 left  join t1.topicId left  join fetch t1.createUser where t1.createUser between ? and ?";
+
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+        query.setInteger(0 ,check);
+        query.setTimestamp(1,times[0]);
+        query.setTimestamp(2,times[1]);
+        List list = query.list();
+        //获取到记录长度（总的页数）
+        count = list.size();
+
+        firstRe = pages * limits;   //当前该显示的记录开始点
+        query.setFirstResult(firstRe);
+        query.setMaxResults(limits);
+        list = query.list();
+
+//        System.out.println("limits"+limits);
+
+        map.put("count",count);     //总数
+        map.put("list",list);       //数据
+        return map;   //返回结果map
+    }
+
+
+//    /**
+//     * 不通过该问题集合
+//     * @param ids
+//     * @return
+//     */
+//    @Override
+//    public boolean noPassQues(List<Integer> ids) {
+//        try{
+//            //不通过该问题
+//            String hql1 = "update QaQuestion set checked = 2 where qId in (:qIds)";
+//            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
+//
+//            int result1 = query1.setParameterList("qIds", ids).executeUpdate();
+//            return true;
+//        }catch(Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * 通过问题集合
+//     * @param ids
+//     * @return
+//     */
+//    @Override
+//    public boolean passQues(List<Integer> ids) {
+//        try{
+//            //不通过该问题
+//            String hql1 = "update QaQuestion set checked = 0 where qId in (:qIds)";
+//            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
+//
+//            int result1 = query1.setParameterList("qIds", ids).executeUpdate();
+//            return true;
+//        }catch(Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
+    @Override
+    public boolean checkQues(List<Integer> ids, int check) {
+        try{
+            //不通过该问题
+            String hql1 = "update QaQuestion set checked =? where qId in (:qIds)";
+            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
+
+            query1.setInteger(0,check);
+            query1.setParameterList("qIds", ids).executeUpdate();
+            return true;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

@@ -21,6 +21,7 @@ public class BackQuestion {
     private BigInteger commentCount;        //评论统计
     private int browseCount;         //浏览统计
     private String headPhoto;   //头像
+    private int checked;   //头像
 
     public String getHeadPhoto() {
         return headPhoto;
@@ -125,5 +126,13 @@ public class BackQuestion {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int checked) {
+        this.checked = checked;
     }
 }

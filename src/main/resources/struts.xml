@@ -71,6 +71,17 @@
             <result name="deleteComm" type="json">
                 <param name="root">status</param>
             </result>
+            <result name="checkContent">/admin/check/content.jsp</result>
+            <result name="check_question_list" type="json">
+                <param name="root">quesList</param>
+            </result>
+            <result name="pass" type="json">
+                <param name="root">status</param>
+            </result>
+            <result name="check" type="json">
+                <param name="root">status</param>
+            </result>
+
 
         </action>
 

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 3tu
-  Date: 2017/12/13
-  Time: 22:06
+  Date: 2019/4/9
+  Time: 13:59
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="org.apache.struts2.ServletActionContext" %>
@@ -17,8 +17,12 @@
 <link type="text/css" href="<%=basePath %>/static/plugins/layui/css/layui.css" rel="stylesheet" />
 
 <style>
-
-
+    .layui-btn-sm{
+        background-color: #11bfe3;
+    }
+    .layui-btn-warm{
+        background-color: #FFB800;
+    }
     .layui-elem-quote{
         border-left: 5px solid #11bfe3;
         border-radius: 4px;
@@ -36,7 +40,7 @@
 </style>
 
 <head>
-    <title>内容管理</title>
+    <title>内容审核</title>
 </head>
 <body>
 <div class="admin-main">
@@ -50,8 +54,11 @@
                     </div>
                 </div>
             </div>
-            <a href="javascript:;" class="layui-btn layui-btn-sm" id="log_searchAll">
-                <i class="layui-icon">&#xe615;</i> 查看全部
+            <a href="javascript:;" class="layui-btn layui-btn-sm" id="check_searchAll">
+            <i class="layui-icon">&#xe615;</i> 待审核
+        </a>
+            <a href="javascript:;" class="layui-btn layui-btn-sm" id="pass_searchAll">
+                <i class="layui-icon">&#xe615;</i> 未通过
             </a>
         </form>
     </blockquote>
@@ -60,10 +67,8 @@
             <legend>问题列表</legend>
             <div class="layui-field-box">
                 <div class="layui-btn-group">
-                    <button class="layui-btn layui-btn-warm layui-btn-sm " id="delChoose">删除选中行数据</button>
-                </div>
-                <div class="layui-btn-group">
-                    <button class="layui-btn layui-btn-sm" id="checkChoose">审核选中行数据</button>
+                    <button class="layui-btn layui-btn-sm" id="pass">通过选中行数据</button>
+                    <button class="layui-btn layui-btn-sm   layui-btn-warm" id="noPass">不通过选中行数据</button>
                 </div>
                 <table id="questionDemo" lay-filter="ques"></table>
             </div>
@@ -80,20 +85,15 @@
     <span>{{ date+" "+time }}</span>
 </script>
 
-<script type="text/html" id="labelsTpl">
-    <%--时间转化--%>
-    {{# for(var i = 0;i < d.labels.length;i++) { }}
-    <button class="layui-btn layui-btn-xs">{{ d.labels[i] }}</button>
-    {{# } }}
-
-</script>
 </body>
 <script src="<%=basePath %>/static/plugins/js/jquery-3.1.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath %>/static/plugins/layui/layui.all.js"></script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="detailQues">查看详情</a>
-    <a class="layui-btn layui-btn-sm" lay-event="checkQues">进行审核</a>
-    <a class="layui-btn layui-btn-warm layui-btn-sm" lay-event="delQues">删除</a>
+    <a class="layui-btn layui-bheighttn-normal layui-btn-sm" lay-event="detailQues">查看详情</a>
+    <a class="layui-btn layui-bheighttn-warm layui-btn-sm" lay-event="passQues">通过</a>
+    {{#  if(d.checked == 1 ){  }}
+    <a class="layui-btn layui-bheighttn-warm layui-btn-sm layui-btn-warm" lay-event="noPassQues">不通过</a>
+    {{# } }}
 
 
 </script>
@@ -118,7 +118,7 @@
                 endDate = endDate['year']+"-"+endDate['month']+"-"+endDate['date']+" "+endDate['hours']+":"+""+endDate['minutes']+":"+endDate['seconds'];
 
                 table.reload('questionDemo',{
-                    url: '<%=path%>/admin/qaBackQues_getAllQuestion.action' //数据接口
+                    url: '<%=path%>/admin/qaBackQues_checkContentList.action' //数据接口
                     ,where:{
                         "startDate":date,
                         "endDate":endDate
@@ -128,12 +128,24 @@
         });
 
 
-        // 查看全部
-        $("#log_searchAll").on('click',function () {
+        // 查看待审核全部
+        $("#check_searchAll").on('click',function () {
             table.reload('questionDemo',{
-                url: '<%=path%>/admin/qaBackQues_getAllQuestion.action' //数据接口
+                url: '<%=path%>/admin/qaBackQues_checkContentList.action' //数据接口
                 ,where:{
                     "startDate":""
+                    ,"check":1
+                }
+            });
+        });
+
+        // 未通过全部
+        $("#pass_searchAll").on('click',function () {
+            table.reload('questionDemo',{
+                url: '<%=path%>/admin/qaBackQues_checkContentList.action' //数据接口
+                ,where:{
+                    "startDate":""
+                    ,"check":2
                 }
             });
         });
@@ -144,7 +156,7 @@
             elem: '#questionDemo'
             ,id:'questionDemo'
             ,height: 600
-            ,url: '<%=path%>/admin/qaBackQues_getAllQuestion.action' //数据接口
+            ,url: '<%=path%>/admin/qaBackQues_checkContentList.action' //数据接口
             ,page: true //开启分页
             ,align:'center'
             ,where:{
@@ -153,10 +165,8 @@
             ,width: $(document).width()*0.96
 //            ,height: $(document).height()*0.80      //高度
             ,cols: [[ //表头
-                 {type:'checkbox',align:'center',fixed: true}
-                ,{field: 'quesId', title: 'ID',  sort: true, align:'center',width: $(document).width()*0.07}
+                {type:'checkbox',align:'center',fixed: true}
                 ,{field: 'quesTitle', title: '问题标题',  sort: true, align:'center',width: $(document).width()*0.12}
-//                ,{field: 'quesDetail', title: '详细内容', align:'center',width: $(document).width()*0.3}
                 ,{field: 'topicName', title: '所属话题', sort: true, align:'center',width: $(document).width()*0.1}
                 ,{field: 'createDate', title: '时间', sort: true, templet:'#timeTpl',align:'center', width: $(document).width()*0.2} //指定tpl模板
                 ,{field: 'account', title: '创建账号', sort: true, align:'center',width: $(document).width()*0.15}
@@ -178,94 +188,37 @@
                 var theQuesId = data.quesId;
                 getDetailQues(theQuesId);
             }
-            //删除该问题
-            if(obj.event == 'delQues') {
-                layer.confirm('这样会将该问题的评论一起删除！确定删除吗？', {
+            //不通过该问题
+            if(obj.event == 'noPassQues') {
+                layer.confirm('确定不通过吗？', {
                     icon:3,
-                    btn: ['确定删除', '我在想想']
+                    btn: ['确定不通过', '我在想想']
                 },function() {
                     var theQuesId = data.quesId;
-                    deleteQues(theQuesId);
+                    checkQues(theQuesId,2);
                 });
-
             }
 
-            //审核该问题
-            if(obj.event == 'checkQues') {
-                layer.confirm('确定审核该问题吗？', {
+            // 通过该问题
+            if(obj.event == 'passQues') {
+                layer.confirm('确定通过吗？', {
                     icon:3,
-                    btn: ['确定审核', '我在想想']
+                    btn: ['确定通过', '我在想想']
                 },function() {
                     var theQuesId = data.quesId;
-                    checkQues(theQuesId,1);
+                    checkQues(theQuesId,0);
                 });
-
             }
 
         });
 
-        /**
-         *获取详细信息
-         * @param quesId
-         */
-        function getDetailQues(quesId) {
-            window.location.href = "<%=path%>/admin/qaBackQues_getTheQues.action?qId="+quesId;
-        }
 
 
-        /**
-         * 删除问题
-         * @param quesId
-         */
-        function deleteQues(quesId) {
-            $.ajax({
-                url: "<%=path%>/admin/qaBackQues_deleteQues.action?qId="+quesId,
-                type: 'POST',
-                dataType: 'json',
-                data: {'qId': quesId},
-                error: function(request){
-                    layer.msg("请求服务器超时", {time: 1000, icon: 5});
-                },
-                success: function(data){
-                    if (data.status = "0"){
-                        layer.msg("删除成功！",{time: 1000,icon: 1}, function(){
-                            location.reload();
-                        });
-                    }else{
-                        layer.msg('删除失败！', {time: 1000,icon: 2});
-                    }
-                }
-            });
-        }
-
-
-        // 审核问题
-        function checkQues(quesId,check) {
-            $.ajax({
-                url: "<%=path%>/admin/qaBackQues_checkQues.action?qId="+quesId,
-                type: 'POST',
-                dataType: 'json',
-                data: {'qId': quesId,'check':check},
-                error: function(request){
-                    layer.msg("请求服务器超时", {time: 1000, icon: 5});
-                },
-                success: function(data){
-                    if (data.status = "0"){
-                        layer.msg("操作成功！",{time: 1000,icon: 1}, function(){
-                            location.reload();
-                        });
-                    }else{
-                        layer.msg('操作失败！', {time: 1000,icon: 2});
-                    }
-                }
-            });
-        }
-
-        // 删除选择
-        $("#delChoose").on("click",function(){
-            layer.confirm('这样会将该问题的评论一起删除！确定删除已选择的问题吗？', {
+        // 通过审核
+        $("#pass").on("click",function(){
+            layer.confirm('确定通过已选择的问题吗？', {
                 icon:3,
-                btn: ['确定删除', '我在想想']
+                btn: ['确定通过', '我在想想']
             },function(index) {
                 // 获取选中的对象
                 var checkStatus = table.checkStatus('questionDemo');
@@ -277,16 +230,17 @@
                 for (var i = 0; i < chooseData.length; i++) {
                     ids.push(chooseData[i].quesId);
                 }
+                console.log(ids);
 
                 $.ajax({
-                    url: '<%=path%>/admin/qaBackQues_deleteQues.action'
+                    url: '<%=path%>/admin/qaBackQues_checkQues.action'
                     ,traditional:true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
-                    ,data:{"qId":ids}
+                    ,data:{"qId":ids,'check':0}
                     ,dataType:'json'
                     // 返回成功的
                     ,success:function(data){
                         if(data.status == "0"){
-                            layer.msg("删除成功!",{
+                            layer.msg("操作成功!",{
                                 icon:1,
                                 timeout:2000
                             },function(){
@@ -294,7 +248,7 @@
                             });
 
                         }else{
-                            layer.msg("删除失败!!",{
+                            layer.msg("操作失败!!",{
                                 icon:2,
                                 timeout:2000
                             },function () {
@@ -326,12 +280,11 @@
 
         });
 
-
-        // 审核选择
-        $("#checkChoose").on("click",function(){
-            layer.confirm('确定审核已选择的问题吗？', {
+        // 不通过审核
+        $("#noPass").on("click",function(){
+            layer.confirm('确定不通过已选择的问题吗？', {
                 icon:3,
-                btn: ['确定审核', '我在想想']
+                btn: ['确定不通过', '我在想想']
             },function(index) {
                 // 获取选中的对象
                 var checkStatus = table.checkStatus('questionDemo');
@@ -343,11 +296,12 @@
                 for (var i = 0; i < chooseData.length; i++) {
                     ids.push(chooseData[i].quesId);
                 }
+                console.log(ids);
 
                 $.ajax({
                     url: '<%=path%>/admin/qaBackQues_checkQues.action'
                     ,traditional:true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
-                    ,data:{"qId":ids,'check':1}
+                    ,data:{"qId":ids,'check':2}
                     ,dataType:'json'
                     // 返回成功的
                     ,success:function(data){
@@ -393,7 +347,36 @@
         });
 
 
+        /**
+         *获取详细信息
+         * @param quesId
+         */
+        function getDetailQues(quesId) {
+            window.location.href = "<%=path%>/admin/qaBackQues_getTheQues.action?qId="+quesId;
+        }
 
+
+        // 主操作方法
+        function checkQues(quesId,check) {
+            $.ajax({
+                url: "<%=path%>/admin/qaBackQues_checkQues.action?qId="+quesId,
+                type: 'POST',
+                dataType: 'json',
+                data: {'qId': quesId,'check':check},
+                error: function(request){
+                    layer.msg("请求服务器超时", {time: 1000, icon: 5});
+                },
+                success: function(data){
+                    if (data.status = "0"){
+                        layer.msg("操作成功！",{time: 1000,icon: 1}, function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg('操作失败！', {time: 1000,icon: 2});
+                    }
+                }
+            });
+        }
 
         //ajax加载完数据后重新修改iframe高度
         // 修改iframe的高度值

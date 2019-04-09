@@ -29,4 +29,9 @@ public interface QaBackQuesService {
     public Map getTheComment_two(int pq_id);
 
     public boolean deleteComm(int c_id);
+
+    Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check);
+
+
+    boolean checkQues(List<Integer> ids, int check);
 }

@@ -181,6 +181,114 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
     }
 
 
+    /**
+     * 内容审核页面
+     * @return
+     */
+    public String checkContent(){
+        return "checkContent";
+    }
+
+
+    /**
+     * 审核内容列表
+     * @return
+     */
+    public String checkContentList(){
+            //初始化map集合
+            Map<String, Object> map = new HashMap<String, Object>();
+            Map receiveMap = new HashMap<String, Object>();
+            String pages;                     // 请求页数
+            String limit;                     //每页限制
+            int check = 1;                  // 默认为查找待审核问题
+            String[] rangeDate = new String[4];                         // 请求时间范围
+
+            // 获得请求参数
+            Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
+            pages = ((String []) params.get("page"))[0];
+            limit = ((String[]) params.get("limit"))[0];
+            rangeDate[0] = ((String[]) params.get("startDate"))[0];       // 请求时间范围
+
+            // 如果包含结尾时间
+            if(params.containsKey("endDate")){
+                rangeDate[1] = ((String[]) params.get("endDate"))[0];
+            }
+
+            // 包含筛选信息
+            if(params.containsKey("check")){
+                String c= ((String[]) params.get("check"))[0];
+                check = Integer.valueOf(c);
+            }
+
+            if(pages.equals("") || limit.equals("")) {
+                map.put("code","1");
+                map.put("msg","参数返回错误!");
+            }else {
+                receiveMap = qaBackQuesService.getCheckQuestionList(pages,limit, rangeDate,check);
+                map.put("code","0");  //成功
+                map.put("msg","");
+                map.put("count",receiveMap.get("count"));
+                map.put("data",receiveMap.get("quesLists"));
+            }
+
+            //转化json形式数据
+            quesList = JSONObject.fromObject(map);
+            return "check_question_list";
+
+    }
+
+
+    /**
+     * 不通过所选取的内容
+     * @return
+     */
+    public String checkQues(){
+        Map<String, Object> map = new HashMap<>();
+        String[] qIds_temps;
+        Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
+
+        qIds_temps = ((String []) params.get("qId"));
+        // 转换为List集合
+        List<Integer> ids = new ArrayList<Integer>();
+        int check = Integer.valueOf(((String[]) params.get("check"))[0]);
+
+        for (int j = 0; j < qIds_temps.length; j++) {
+            ids.add(Integer.parseInt(qIds_temps[j]));
+        }
+        if(qaBackQuesService.checkQues(ids,check)) {
+            map.put("status", "0");
+        }else {
+            map.put("status", "1");
+        }
+        status = JSONObject.fromObject(map);
+
+        return "check";
+    }
+
+//    /**
+//     * 通过所选取的内容
+//     * @return
+//     */
+//    public String passQues(){
+//        Map<String, Object> map = new HashMap<>();
+//        String[] qIds_temps;
+//        Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
+//        qIds_temps = ((String []) params.get("qId"));
+//        // 转换为List集合
+//        List<Integer> ids = new ArrayList<Integer>();
+//        for (int j = 0; j < qIds_temps.length; j++) {
+//            ids.add(Integer.parseInt(qIds_temps[j]));
+//        }
+//        if(qaBackQuesService.passQues(ids)) {
+//            map.put("status", "0");
+//        }else {
+//            map.put("status", "1");
+//        }
+//        status = JSONObject.fromObject(map);
+//        return "pass";
+//    }
+
+
 
 
 

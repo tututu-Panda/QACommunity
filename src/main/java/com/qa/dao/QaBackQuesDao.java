@@ -78,4 +78,8 @@ public interface QaBackQuesDao {
     public boolean deleteComment(int c_id);
 
     boolean checkLabel(int l_id);
+
+    Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check);
+
+    boolean checkQues(List<Integer> ids, int check);
 }

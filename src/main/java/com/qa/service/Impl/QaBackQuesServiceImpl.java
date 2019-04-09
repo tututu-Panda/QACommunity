@@ -8,7 +8,6 @@ import com.qa.service.QaBackQuesService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 import java.util.*;
 
 
@@ -54,15 +53,12 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
         //自定义了BackQuestion类，来存放问题对象
         for(int i = 0;i < list.size();i++) {
             Object[] object = (Object[]) list.get(i);// 每行记录不在是一个对象 而是一个数组
-            String labelIds = (String) object[3];
-            String[] labelNames = this.qaBackQuesDao.LabelList(labelIds);  //调用函数获取每个问题所对应的标签信息
 
             //新建实例，并赋值
             BackQuestion bqt = new BackQuestion();
             bqt.setQuesId((Integer) object[0]);
             bqt.setQuesTitle((String) object[1]);
             bqt.setQuesDetail((String) object[2]);
-            bqt.setLabels(labelNames);
             bqt.setCreateDate((Date) object[4]);
             bqt.setToId((Integer) object[5]);
             bqt.setTopicName((String) object[6]);
@@ -199,6 +195,64 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
      */
     public boolean deleteComm(int c_id) {
         if(this.qaBackQuesDao.deleteComment(c_id)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 获取审核问题列表
+     * @param pages
+     * @param limit
+     * @param rangeDate
+     * @param check
+     * @return
+     */
+    @Override
+    public Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check) {
+        List<BackQuestion> questionList = new ArrayList<BackQuestion>();
+        int page = Integer.parseInt(pages);
+        int limits = Integer.parseInt(limit);
+        Map map = this.qaBackQuesDao.getCheckQuestionList(page, limits,rangeDate,check);
+        List list = (List) map.get("list");
+        //自定义了BackQuestion类，来存放问题对象
+        for(int i = 0;i < list.size();i++) {
+            Object[] object = (Object[]) list.get(i);// 每行记录不在是一个对象 而是一个数组
+
+            //新建实例，并赋值
+            BackQuestion bqt = new BackQuestion();
+            bqt.setQuesId((Integer) object[0]);
+            bqt.setQuesTitle((String) object[1]);
+            bqt.setQuesDetail((String) object[2]);
+//            System.out.println(object[3]);
+            bqt.setCreateDate((Date) object[3]);
+            bqt.setChecked((Integer) object[4]);
+            bqt.setToId((Integer) object[5]);
+            bqt.setTopicName((String) object[6]);
+            bqt.setAccount((String) object[7]);
+            bqt.setAccountName((String) object[8]);
+            //将对象实例添加进入map集合
+            questionList.add(bqt);
+        }
+
+        //删除原先的list键集合
+        map.remove("list");
+        map.put("quesLists",questionList);
+        return map;
+    }
+
+
+    /**
+     * 问题审核
+     * @param ids
+     * @param check
+     * @return
+     */
+    @Override
+    public boolean checkQues(List<Integer> ids, int check) {
+        if(this.qaBackQuesDao.checkQues(ids,check)) {
             return true;
         }else {
             return false;
