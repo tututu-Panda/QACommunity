@@ -58,7 +58,7 @@ public interface QaBackQuesDao {
      * @param q_id
      * @return
      */
-    public Map getTheComment(int q_id);
+    public Map getTheComment(int q_id,String page);
 
     public int getCountOfSonComment(int c_id);
 

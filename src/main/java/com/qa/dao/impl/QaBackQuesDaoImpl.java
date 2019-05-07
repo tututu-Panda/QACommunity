@@ -179,7 +179,23 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
      * @param q_id
      * @return
      */
-    public Map getTheComment(int q_id) {
+    public Map getTheComment(int q_id,String p) {
+
+        int firstRe ;            // 查询的第一个结果
+        int count ;              // 查询到总数
+        int pages;           //页码,int型变量，默认为空
+        int limit = 5;         //每页的显示数
+
+        if(p == null){
+            p = "0";
+        }
+        int page = Integer.valueOf(p);
+        if(page == 0) {
+            pages = 0;
+        }else {
+            pages = page - 1;
+        }
+
         Map map = new HashMap();
         //同样原生sql，需要左连接，因为当评论没有赞的时候一样要查询出来
         String sql = "select t1.c_id as commId,     t1.content as content,      t1.create_date as createDate,       " +
@@ -188,6 +204,16 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
                 " where t1.pid is null and t1.question_id="+q_id+" GROUP BY t1.c_id";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
         List list = query.list();
+        count = list.size();
+
+        // 获取该分页的列表数据
+        firstRe = pages * limit;   //当前该显示的记录开始点
+        query.setFirstResult(firstRe);
+        query.setMaxResults(limit);
+        list = query.list();
+
+        map.put("count", count);
+        map.put("page",page);
         map.put("commentList", list);
         this.getCountOfSonComment(48);
         return map;

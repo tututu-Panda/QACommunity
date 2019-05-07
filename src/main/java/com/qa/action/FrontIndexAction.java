@@ -87,8 +87,9 @@ public class FrontIndexAction extends BaseAction{
      */
     public String getTheOneComment() {
         String quesId_temp = request.getParameter("quesId");
+        String page = request.getParameter("page");     //页码
         int quesId = Integer.parseInt(quesId_temp);
-        Map map = qaBackQuesService.getTheComment(quesId);  //接受返回map集合
+        Map map = qaBackQuesService.getTheComment(quesId,page);  //接受返回map集合
         map.put("status","0");
         quesComment = JSONObject.fromObject(map);
         return "one_comment";

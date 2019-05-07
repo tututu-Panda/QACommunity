@@ -121,8 +121,9 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
      */
     public String getComment() {
         String qId_temp = request.getParameter("qId");
+        String page = request.getParameter("page");     //页码
         int qId = Integer.parseInt(qId_temp);
-        Map map = qaBackQuesService.getTheComment(qId);  //接受返回map集合
+        Map map = qaBackQuesService.getTheComment(qId,page);  //接受返回map集合
         map.put("status","0");
         quesComment = JSONObject.fromObject(map);
         return "comment_one";

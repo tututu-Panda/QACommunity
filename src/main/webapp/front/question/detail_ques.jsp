@@ -150,6 +150,11 @@
                 <ul class="jieda" id="jieda">
 
                 </ul>
+                <div style="text-align: center">
+                    <div class="" id="pages">
+
+                    </div>
+                </div>
             </div>
         </div>
         <s:include value="../commom/comRight.jsp"/>
@@ -158,6 +163,9 @@
 
 <s:include value="../commom/comFooter.jsp"/>
 <script>
+
+    var count=5;
+    var curr=1;
 
     layui.cache.page = 'jie';
     layui.cache.user = {
@@ -180,7 +188,9 @@
         var layer = layui.layer;
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var form = layui.form;
+        var laypage = layui.laypage;
         var layedit = layui.layedit;
+
 
         // 初始化编辑器
         var edit = layedit.build('L_content',{
@@ -191,31 +201,59 @@
         });
 
 
+
         var quesId = $(".quesIdc").val();
+        InitComment();
         //初始化ajax加载评论
-        $.ajax({
-            url: '<%=path%>/front/frontIndex_getTheOneComment.action'
-            , data: {'quesId':quesId}
-            , dataType: 'json'
-            // 返回成功的
-            , success: function (data) {
-                if (data.status == "0") {
-                    getComment_one(data);
-                } else {
+        function InitComment(page){
+            $.ajax({
+                url: '<%=path%>/front/frontIndex_getTheOneComment.action'
+                , data: {'quesId':quesId,'page':page}
+                , dataType: 'json'
+                // 返回成功的
+                , success: function (data) {
+                    if (data.status == "0") {
+                        getComment_one(data,page);
+                        initPage();
+                    } else {
+
+                    }
+                }
+                ,complete:function() {
 
                 }
-            }
-            ,complete:function() {
+            });
+        }
 
-            }
-        });
 
+        // 放在方法内，得到数据后实例化
+        function initPage(){
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'pages' //注意，这里的是 ID，不用加 # 号
+                ,count: count //数据总数，从服务端得到
+                ,limit: 5
+                ,group:5
+                ,theme: '#1E9FFF'
+                ,curr: curr
+                ,jump: function(obj, first) {
+                    var curr = obj.curr;
+                    if(!first) {
+                        <%--window.location.href = "<%=basePath %>/front/frontIndex_getQuestionIndex?page="+curr+"&orderType="+orderCode+"&to_id="+topicId;--%>
+                        InitComment(curr);
+                    }
+                }
+            });
+        }
 
         /**
          *获取到json数据对其进行组装，嵌入评论页
          * */
-        function getComment_one(data) {
+        function getComment_one(data,page) {
+            $("#jieda").html("");
             var commList = data.commList;
+            count = data.count;
+            curr =data.page;
             var html;
             var st = <%=frontUser.get("status")%>;
             if(commList.length != 0) {
@@ -266,8 +304,13 @@
                     $("#jieda").append(html);
             }
 
-
+            console.log("里面"+   count);
         }
+
+        console.log(count);
+
+
+
 
 
         /**

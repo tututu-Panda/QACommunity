@@ -23,7 +23,7 @@ public interface QaBackQuesService {
 
     public Map getBrowseForDate(int qId, String[] time);
 
-    public Map getTheComment(int q_id);
+    public Map getTheComment(int q_id,String page);
 
 
     public Map getTheComment_two(int pq_id);

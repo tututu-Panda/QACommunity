@@ -123,10 +123,10 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
      * @param q_id
      * @return
      */
-    public Map getTheComment(int q_id) {
+    public Map getTheComment(int q_id,String page) {
         List<BaCommToQues> baCommToQuesList = new ArrayList<>();
 //        qaBackQuesDao.getCountOfSonComment(48);
-        Map map = this.qaBackQuesDao.getTheComment(q_id);
+        Map map = this.qaBackQuesDao.getTheComment(q_id,page);
         List list = (List) map.get("commentList");
         //同理，新建class,获取评论，用户以及赞数
         for(int i = 0;i < list.size();i++) {
@@ -144,6 +144,8 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
         }
         map.remove("commentList");
         map.put("commList", baCommToQuesList);
+        map.put("count", map.get("count"));
+        map.put("page", map.get("page"));
 
         return map;
     }
