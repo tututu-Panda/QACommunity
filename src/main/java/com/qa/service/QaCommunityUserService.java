@@ -18,7 +18,7 @@ public interface QaCommunityUserService {
 
     public boolean banLog(List<Integer> ids,String comment);
 
-    public boolean updateUser(QaFrontUser user);
+    public boolean updateUser(int user,String password);
 
     QaFrontUser findById(int id);
 

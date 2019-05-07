@@ -91,7 +91,7 @@
 <script src="<%=basePath %>/static/plugins/js/jquery-3.1.1.min.js" type="text/javascript"></script>
 <script src="<%=basePath %>/static/plugins/layui/layui.all.js"></script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-bheighttn-warm layui-btn-sm" lay-event="alter">修改</a>
+    <a class="layui-btn layui-bheighttn-warm layui-btn-sm" lay-event="alter">重置密码</a>
     {{#  if(d.status == 0){ }}
     <a class="layui-btn layui-btn-sm layui-btn-warm"  lay-event="cancelDel">
             解除禁言
@@ -412,20 +412,63 @@
                 });
             }
 
-            // 修改事件
+            // 重置密码事件
             else if (layEvent === "alter"){
-
-                layer.open({
-                    type: 2,
-                    title: ['修改用户信息', 'text-align:center;'],
-                    content: '<%=path%>/admin/qaCommunity_editUser.action?id='+data.id,
-                    area:['500px', '350px'],  //宽高
-                    resize: false,		//是否允许拉伸
-                    scrollbar: false,
-                    end: function(){
-                        location.reload();
-                    }
+                layer.confirm("确定重置密码吗?", function () {
+                    $.ajax({
+                        url: '<%=path%>/admin/qaCommunity_updateComUser.action'
+                        , data: {"id": data.id}
+                        , dataType: 'json'
+                        // 返回成功的
+                        , success: function (data) {
+                            if (data.status == "0") {
+                                layer.msg("重置密码失败!!", {
+                                    icon: 2,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg("重置密码成功!", {
+                                    icon: 1,
+                                    timeout: 2000
+                                }, function () {
+                                    location.reload();
+                                });
+                            }
+                        }
+                        // 超时
+                        , timeout: function () {
+                            layer.msg("请求超时!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                        // 错误
+                        , error: function () {
+                            layer.msg("发生错误!请与管理员联系!", {
+                                icon: 2,
+                                timeout: 2000
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                    });
                 });
+
+                <%--layer.open({--%>
+                    <%--type: 2,--%>
+                    <%--title: ['修改用户信息', 'text-align:center;'],--%>
+                    <%--content: '<%=path%>/admin/qaCommunity_editUser.action?id='+data.id,--%>
+                    <%--area:['500px', '350px'],  //宽高--%>
+                    <%--resize: false,		//是否允许拉伸--%>
+                    <%--scrollbar: false,--%>
+                    <%--end: function(){--%>
+                        <%--location.reload();--%>
+                    <%--}--%>
+                <%--});--%>
             }
         });
 

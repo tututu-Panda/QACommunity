@@ -116,16 +116,14 @@ public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
     /**
      *
      * 描述： 更新用户信息
-    */
+     * @param user
+     */
     @Override
-    public boolean updateUser(QaFrontUser user) {
-        String hql = "update QaFrontUser qf set qf.name=?, qf.sex=?, qf.phone=?, qf.email=? where qf.id=?";
+    public boolean updateUser(int user,String password) {
+        String hql = "update QaFrontUser qf set qf.password=? where qf.id=?";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        query.setString(0,user.getName());
-        query.setInteger(1,user.getSex());
-        query.setString(2,user.getPhone());
-        query.setString(3,user.getEmail());
-        query.setInteger(4,user.getId());
+        query.setString(0,password);
+        query.setInteger(1,user);
         int result = query.executeUpdate();
         if(result != 0) {
             return true;

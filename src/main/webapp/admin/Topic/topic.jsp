@@ -146,7 +146,7 @@
                             });
 
                             }else {
-                            layer.msg("删除失败！", {time: 1000,icon: 2});
+                            layer.msg("删除失败，下面含有子标签或问题！", {time: 1000,icon: 2});
                             }
                             },
                             error: function(){

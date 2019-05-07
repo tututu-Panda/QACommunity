@@ -19,6 +19,7 @@
 <div class="fly-header layui-bg-cyan">
     <div class="layui-container">
         <a class="fly-logo" href="<%=basePath %>">
+           <%--<h1 style="color:#fff">问答系统社区</h1>--%>
             <img src="<%=basePath %>/static/images/logo.png" alt="layui">
         </a>
         <ul class="layui-nav fly-nav layui-hide-xs">

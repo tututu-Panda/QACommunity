@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -167,13 +169,26 @@ public class QaCommunityUserAction extends BaseAction {
 
     /**updateUser
      *
-     * 描述： 更新用户信息
+     * 描述： 重置用户密码
     */
-    public String updateComUser(){
+    public String updateComUser() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         boolean istrue;
         Map<String, Object> map = new HashMap<String, Object>();    // 定义map集合存如入返回json的集合
-        istrue = qaCommunityUserService.updateUser(user);
+        // 获得请求参数
+        Map<String, Object> params = (Map) ActionContext.getContext().getParameters();
+        String[] ids  = (String[]) params.get("id");
+
+        int id = Integer.parseInt(ids[0]);
+
+        // 重置密码
+        String password = super.EncoderByMd5("123456");
+        istrue = qaCommunityUserService.updateUser(id, password);
         map.put("status",istrue);
+        if(istrue){
+            map.put("status","1");
+        }else{
+            map.put("status","0");
+        }
         status = JSONObject.fromObject(map);
         return "update";
     }
