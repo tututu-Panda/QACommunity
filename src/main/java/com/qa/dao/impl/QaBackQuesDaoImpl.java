@@ -424,4 +424,48 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
     }
 
 
+    /**
+     * 获取待审核文章数和文章总数
+     */
+    public Map getCheckQuesAndAllQues(){
+        Map map = new HashMap();
+        String hql;
+        Query query;
+        long checkQues = 0;
+        long allQues = 0;
+
+        // 查找待审核数
+        hql = "SELECT  count(*) FROM QaQuestion where checked = 1";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        checkQues = (long) query.list().get(0);
+
+        // 查找总数
+        hql = "SELECT  count(*) FROM QaQuestion where checked = 0";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        allQues = (long) query.list().get(0);
+
+        map.put("checkQues",checkQues);
+        map.put("allQues",allQues);
+
+        return map;
+    }
+
+
+    /**
+     * 查找最新文章
+     */
+    public Map getLatestArticle(){
+        Map map = new HashMap();
+        String hql;
+        Query query;
+
+        // 查找最新的文章数
+        hql = "select title as title, createDate as createdate from QaQuestion order by createDate desc ";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setMaxResults(5);
+        List list = query.list();
+        map.put("list",list);
+        return map;
+    }
+
 }

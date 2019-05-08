@@ -299,59 +299,59 @@
 <script src="<%=basePath %>/static/plugins/js/bootstrap.min.js" type="text/javascript"></script>
 
 <!--  Plugin for Date Time Picker and Full Calendar Plugin-->
-<script src="<%=basePath %>/static/plugins/js/moment.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/moment.min.js"></script>--%>
 
 <!--  Date Time Picker Plugin is included in this js file -->
-<script src="<%=basePath %>/static/plugins/js/bootstrap-datetimepicker.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-datetimepicker.js"></script>--%>
 
 <!--  Select Picker Plugin -->
-<script src="<%=basePath %>/static/plugins/js/bootstrap-selectpicker.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-selectpicker.js"></script>--%>
 
 <!--  Checkbox, Radio, Switch and Tags Input Plugins -->
-<script src="<%=basePath %>/static/plugins/js/bootstrap-checkbox-radio-switch-tags.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-c/heckbox-radio-switch-tags.js"></script>--%>
 
 <!--  Charts Plugin -->
-<script src="<%=basePath %>/static/plugins/js/chartist.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/chartist.min.js"></script>--%>
 
 <!--  Notifications Plugin    -->
 <script src="<%=basePath %>/static/plugins/js/bootstrap-notify.js"></script>
 
 <!-- Sweet Alert 2 plugin -->
-<script src="<%=basePath %>/static/plugins/js/sweetalert2.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/sweetalert2.js"></script>--%>
 
 <!-- Vector Map plugin -->
-<script src="<%=basePath %>/static/plugins/js/jquery-jvectormap.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/jquery-jvectorm/ap.js"></script>--%>
 
 <!--  Google Maps Plugin    -->
-<script src="<%=basePath %>/static/plugins/js/aa743e8f448a4792bad10d201a7080f6.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/aa743e8f448/a4792bad10d201a7080f6.js"></script>--%>
 
 <!-- Wizard Plugin    -->
-<script src="<%=basePath %>/static/plugins/js/jquery.bootstrap.wizard.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/jquery.bootstrap.wizard.min.js"></script>--%>
 
 <!--  Bootstrap Table Plugin    -->
-<script src="<%=basePath %>/static/plugins/js/bootstrap-table.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-table.js"></script>--%>
 
 <!--  Plugin for DataTables.net  -->
-<script src="<%=basePath %>/static/plugins/js/jquery.datatables.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/jquery.datatables.js"></script>--%>
 
 
 <!--  Full Calendar Plugin    -->
-<script src="<%=basePath %>/static/plugins/js/fullcalendar.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/fullcalendar.min.js"></script>--%>
 
 <!-- Light Bootstrap Dashboard Core javascript and methods -->
-<script src="<%=basePath %>/static/plugins/js/light-bootstrap-dashboard.js"></script>
-<script src="<%=basePath %>/static/plugins/js/layer/layer.js"></script>
-<script src="<%=basePath %>/static/plugins/js/jquery.validate.min.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/light-bootstrap-dashboard.js"></script>--%>
+<%--<script src="<%=basePath %>/static/plugins/js/layer/layer.js"></script>--%>
+<%--<script src="<%=basePath %>/static/plugins/js/jquery.validate.min.js"></script>--%>
 
 <!--   Sharrre Library    -->
-<script src="<%=basePath %>/static/plugins/js/jquery.sharrre.js"></script>
-<script src="<%=basePath %>/static/plugins/js/demo.js"></script>
+<%--<script src="<%=basePath %>/static/plugins/js/jquery.sharrre.js"></script>--%>
+<%--<script src="<%=basePath %>/static/plugins/js/demo.js"></script>--%>
 </body>
 <script type="text/javascript">
     $(document).ready(function(){
 
-        demo.initDashboardPageCharts();
-        demo.initVectorMap();
+//        demo.initDashboardPageCharts();
+//        demo.initVectorMap();
 
         $.notify({
             icon: 'pe-7s-bell',

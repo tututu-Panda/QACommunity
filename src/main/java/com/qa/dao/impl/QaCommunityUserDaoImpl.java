@@ -5,9 +5,11 @@ import com.qa.entity.QaFrontUser;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.Map;
  */
 
 @Repository("QaCommunityUserDao")
+@Transactional(rollbackFor = Exception.class)//出现Exception异常回滚
 public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
 
     @Resource(name = "sessionFactory")
@@ -156,5 +159,33 @@ public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
         return b;
     }
 
+
+    // 获取最新用户以及总用户数
+    public Map getLatestUserAndAllUser(){
+
+        Map userList = new HashMap();       // 结果集合
+
+        long latest = 0;
+        long count = 0;
+        Query query = null;
+
+        // 查找前一周至现在新增用户
+        Date today = new Date();
+        Date yesterdayDate = new Date(today.getTime()-86400000L * 7);
+        String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(yesterdayDate);
+        String hql = "select count(*) from QaFrontUser  where createDate > ?";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString(0,yesterday);
+        latest = (long) query.list().get(0);
+        userList.put("latest",latest);
+
+        // 查找总用户
+        hql = "select count(*) from QaFrontUser ";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        count = (long) query.list().get(0);
+        userList.put("count",count);
+
+        return userList;
+    }
 
 }

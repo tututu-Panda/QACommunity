@@ -19,4 +19,6 @@ public interface QaCommunityUserDao {
     QaFrontUser findById(int id);
 
     boolean banComUser(List<Integer> ids);
+
+    Map getLatestUserAndAllUser();
 }

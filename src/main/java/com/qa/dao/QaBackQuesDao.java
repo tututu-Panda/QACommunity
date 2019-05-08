@@ -82,4 +82,8 @@ public interface QaBackQuesDao {
     Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check);
 
     boolean checkQues(List<Integer> ids, int check);
+
+    Map getCheckQuesAndAllQues();
+
+    Map getLatestArticle();
 }

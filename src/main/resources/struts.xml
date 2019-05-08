@@ -30,13 +30,28 @@
             <result name="userLogin">/admin/login.jsp</result>
         </action>
 
-        <!--后台用户基本信息-->
+
+        <!--后台面板获取信息-->
         <action name="BackInfo_*" class="com.qa.action.BackInfoAction" method="{1}">
             <result name="FindBackInfo">/admin/BackInfo/BackInfo.jsp</result>
             <result name="updateInfoSuccess" type="redirect">/admin/BackInfo/BackInfo_FindBackInfo.action?username=${account}</result>
             <result name="updateInfoPssuccess" type="redirect">/admin/BackInfo/BackInfo_FindBackInfo.action?username=${account}</result>
             <result name="uploadPhoto" type="json">
                 <param name="root">status</param>
+            </result>
+        </action>
+
+
+        <!--后台用户基本信息-->
+        <action name="qaDashBoard_*" class="com.qa.action.DashBoardAction" method="{1}">
+            <result name="getAllUser" type="json">
+                <param name="root">List</param>
+            </result>
+            <result name="getAllArticle" type="json">
+                <param name="root">List</param>
+            </result>
+            <result name="getLatestArticleList" type="json">
+                <param name="root">List</param>
             </result>
         </action>
 
