@@ -41,6 +41,17 @@
         <url-pattern>/frontUser/*</url-pattern>
     </filter-mapping>
 
+    <!--判断是否访问的文章详情-->
+    <filter>
+        <filter-name>userLogFilter</filter-name>
+        <filter-class>com.qa.filter.userLogFilter</filter-class>
+    </filter>
+    <!--过滤路径 , /front/下的所有操作-->
+    <filter-mapping>
+        <filter-name>userLogFilter</filter-name>
+        <url-pattern>/front/frontIndex_getTheQuestion</url-pattern>
+    </filter-mapping>
+
     <!-- struts2容器控制器 -->
     <filter>
         <filter-name>struts2</filter-name>

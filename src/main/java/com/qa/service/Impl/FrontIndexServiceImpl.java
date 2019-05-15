@@ -54,10 +54,10 @@ public class FrontIndexServiceImpl implements FrontIndexService{
 
             // redis获取该问题id的浏览量,如果没有再进行查询添加
             if(redisTemplate.opsForValue().get(("shadow:views_"+object[0])) != null){
-                System.out.println("获取缓存---");
+//                System.out.println("获取缓存---");
                 bq.setBrowseCount((int) redisTemplate.opsForValue().get(("views_"+object[0])));
             }else{
-                System.out.println("添加缓存----");
+//                System.out.println("添加缓存----");
                 // 查询浏览量,并存入redis
                 int views = frontIndexDao.getViews((Integer) object[0]);
                 // 设置一个shadowkey用户过期事件回调

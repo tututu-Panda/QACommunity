@@ -468,4 +468,22 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         return map;
     }
 
+
+    /**
+     * 根据话题id查找所有问题
+     */
+
+    public List getQuesByTopicId(Integer topicIdList, List logList){
+
+        String hql;
+        Query query;
+
+//        hql = "select title , qId  from QaQuestion where topicId in ("+topicIdList+")";
+        hql = "select title , qId  from QaQuestion where topicId =? and qId not in(:loglist) order by qId";
+        query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter(0,topicIdList);
+        query.setParameterList("loglist",logList);
+        return  query.list();
+    }
+
 }

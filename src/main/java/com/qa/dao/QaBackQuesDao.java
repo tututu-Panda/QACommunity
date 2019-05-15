@@ -86,4 +86,6 @@ public interface QaBackQuesDao {
     Map getCheckQuesAndAllQues();
 
     Map getLatestArticle();
+
+    List getQuesByTopicId(Integer topicIdList, List logList);
 }
