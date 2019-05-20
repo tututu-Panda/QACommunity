@@ -25,7 +25,7 @@ public class MessageDelegateImpl implements MessageDelegate {
         int num = str.indexOf("_");
         String st = str.substring(0, num);
        int id = Integer.parseInt((String) str.subSequence(num+1,str.length()));
-        System.out.println("mes:------"+st);
+//        System.out.println("mes:------"+st);
 
         // 浏览量
         if(st .equals("views")){

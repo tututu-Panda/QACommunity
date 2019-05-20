@@ -79,6 +79,52 @@ public class FrontIndexServiceImpl implements FrontIndexService{
 
     }
 
+    public Map getSearchQues(String pages, String orderTypes, int topic, String searchValue){
+        List<BackQuestion> questionList = new ArrayList<>();
+        int page = Integer.parseInt(pages);
+        int orderType = Integer.parseInt(orderTypes);
+        String search = searchValue;
+        Map map = this.frontIndexDao.getSearchQues(page, orderType,topic,search);
+        List list = (List)map.get("list");
+
+        for(int i = 0;i < list.size();i++) {
+
+            Object[] object = (Object[]) list.get(i);
+            BackQuestion bq = new BackQuestion();
+            bq.setQuesId((Integer) object[0]);
+            bq.setQuesTitle((String) object[1]);
+            bq.setCreateDate((Date) object[2]);
+            bq.setToId((Integer)object[3]);
+            bq.setTopicName((String)object[4]);
+            bq.setId((int)(object[5]));
+            bq.setAccountName((String)object[6]);
+            bq.setHeadPhoto((String)object[7]);
+            bq.setCommentCount((BigInteger) object[8]);
+//            bq.setBrowseCount((int)object[9]);
+
+            // redis获取该问题id的浏览量,如果没有再进行查询添加
+            if(redisTemplate.opsForValue().get(("shadow:views_"+object[0])) != null){
+//                System.out.println("获取缓存---");
+                bq.setBrowseCount((int) redisTemplate.opsForValue().get(("views_"+object[0])));
+            }else{
+//                System.out.println("添加缓存----");
+                // 查询浏览量,并存入redis
+                int views = frontIndexDao.getViews((Integer) object[0]);
+                // 设置一个shadowkey用户过期事件回调
+                // 在回调事件中,通过key并同步到数据库中
+                redisTemplate.opsForValue().set("shadow:views_"+object[0],"",1, TimeUnit.DAYS);
+                redisTemplate.opsForValue().set("views_"+object[0],views);
+                bq.setBrowseCount(views);
+            }
+
+            questionList.add(bq);
+        }
+
+        map.remove("list");
+        map.put("quesLists", questionList);
+        return map;
+    }
+
     public Map getTheQuesInfo(int quesId) {
 
         List<BackQuestion> question = new ArrayList<>();

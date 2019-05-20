@@ -148,6 +148,7 @@
     <package name="front" namespace="/front" extends="json-default">
         <action name="frontIndex_*" class="com.qa.action.FrontIndexAction" method="{1}">
             <result name="front_index">/front/front_index.jsp</result>
+            <result name="search">/front/search.jsp</result>
             <result name="detail_ques">/front/question/detail_ques.jsp</result>
             <result name="one_comment" type="json">
                 <param name="root">quesComment</param>

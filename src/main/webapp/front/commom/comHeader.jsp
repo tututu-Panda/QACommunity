@@ -32,7 +32,16 @@
             <li class="layui-nav-item">
                 <a href="<%=basePath %>/front/frontIndex_topicIndex"><i class="iconfont icon-iconmingxinganli"></i>话题</a>
             </li>
+
+            <li class="layui-nav-item">
+                <input type="text" id="serachValue"  class="layui-input " placeholder=" 搜索">
+                <button id="search" class="layui-btn layui-btn-primary layui-btn-sm" style=" border:unset; right: 0;top: 5px;position: absolute;">
+                    <i class="layui-icon" >&#xe615;</i>
+                </button>
+            </li>
+
         </ul>
+
 
         <ul class="layui-nav fly-nav-user">
 

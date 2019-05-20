@@ -48,5 +48,13 @@
             });
         });
 
+
+
+        // 搜索
+        $("#search").on('click',function () {
+            var searchVal = $("#serachValue").val();
+            window.location.href = "<%=basePath %>/front/frontIndex_getSearchQuestion?page=1&orderType=1&search="+searchVal;
+        })
+
     });
 </script>

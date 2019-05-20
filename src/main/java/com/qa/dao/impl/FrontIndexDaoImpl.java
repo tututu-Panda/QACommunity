@@ -53,7 +53,7 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         String sql = null;
 
         // 如果传入话题,查询话题对应的标签
-        System.out.println("----"+topic);
+//        System.out.println("----"+topic);
         if(topic != 0){
 
             // 根据子标签查询问题详情
@@ -87,7 +87,7 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         // 获取总数
         List list = query.list();
         count = list.size();
-        System.out.println("count:"+count);
+//        System.out.println("count:"+count);
 
         // 获取该分页的列表数据
         firstRe = pages * limit;   //当前该显示的记录开始点
@@ -209,6 +209,83 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         query.setInteger(0,views);
         query.setInteger(1,ques_id);
         query.executeUpdate();
+    }
+
+    public  Map getSearchQues(int page, int orderType, int topic, String search){
+        int firstRe = 0;            // 查询的第一个结果
+        int count = 0;              // 查询到总数
+        int pages;           //页码,int型变量，默认为空
+        int limit = 9;         //每页的显示数
+        String orderString;     //排序
+
+        int[] labels;       // 话题对应的标签
+
+        if(page == 0) {
+            pages = 0;
+        }else {
+            pages = page - 1;
+        }
+        if(orderType == 1) {
+            orderString = "createDate";
+        }else{
+            orderString = "commNum";
+        }
+
+        Map map = new HashMap();
+
+        String sql = null;
+
+        // 如果传入话题,查询话题对应的标签
+        if(topic != 0){
+
+            // 根据子标签查询问题详情
+            sql =  "select t1.q_id as qId,    t1.title as qTitle,     t1.create_date as createDate,       " +
+                    "t2.to_id as toId,      t2.topic_name as topicName,     t3.id as id,  " +
+                    "t3.name as accountName,    t3.photo as userPhoto,      count(DISTINCT t4.c_id) commNum,    " +
+                    "t1.views as browNum from qa_question as t1  " +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id "+
+                    " left join qa_front_user t3 on t1.create_user=t3.id" +
+                    " left join qa_comment t4 on t1.q_id=t4.question_id" +
+                    " where t1.topic_id = "+topic+
+                    " and t1.checked = 0 "+
+                    "and t1.title LIKE '%"+search+"%'"+
+                    " group by t1.q_id order by "+orderString+" desc ";
+        }
+
+
+        else{
+            sql = "select t1.q_id as qId,    t1.title as qTitle,     t1.create_date as createDate,       " +
+                    "t2.to_id as toId,      t2.topic_name as topicName,     t3.id as id,  " +
+                    "t3.name as accountName,    t3.photo as userPhoto,      count(DISTINCT t4.c_id) commNum,    " +
+                    "t1.views as browNum from qa_question as t1" +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                    " left join qa_front_user t3 on t1.create_user=t3.id" +
+                    " left join qa_comment t4 on t1.q_id=t4.question_id" +
+                    " where t1.checked = 0  " +
+                    "and t1.title LIKE '%"+search+"%'"+
+                    " group by t1.q_id order by "+orderString+" desc";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+
+        // 获取总数
+        List list = query.list();
+        count = list.size();
+//        System.out.println("count:"+count);
+
+        // 获取该分页的列表数据
+        firstRe = pages * limit;   //当前该显示的记录开始点
+        query.setFirstResult(firstRe);
+        query.setMaxResults(limit);
+        list = query.list();
+
+
+        map.put("count", count);
+        map.put("page",page);
+        map.put("orderType", orderType);
+        map.put("search", search);
+        map.put("list", list);
+        return map;
     }
 
 }

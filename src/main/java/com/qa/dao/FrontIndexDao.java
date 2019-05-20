@@ -42,4 +42,6 @@ public interface FrontIndexDao {
     int getViews(int ques_id);
 
     void updateViews(int ques_id, int views);
+
+    Map getSearchQues(int page, int orderType, int topic, String search);
 }

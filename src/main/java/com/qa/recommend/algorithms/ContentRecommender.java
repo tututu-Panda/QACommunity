@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * 基于内容的推荐
@@ -34,7 +33,7 @@ public class ContentRecommender {
      * 返回问题id
      * @param userId
      */
-    public void recommend(int userId){
+    public Map<Integer, Double> recommend(int userId){
 
         TFIDF tf = new TFIDF();
 
@@ -89,6 +88,7 @@ public class ContentRecommender {
 
         System.out.println("问题关键字："+quesIds);
 
+        return quesIds;
     }
 
 
@@ -162,11 +162,11 @@ public class ContentRecommender {
             v1 = userList.size()<len?0:userList.get(i).getScore();
             v2 = quesList.size()<len?0:quesList.get(i).getScore();
             f1 += v1 * v2;
-            f2 += Math.sqrt(v1*v1);
-            f3 += Math.sqrt(v2*v2);
+            f2 += v1*v1;
+            f3 += v2*v2;
         }
 
-        cos = f1/f2*f3;
+        cos = f1/(Math.sqrt(f2)*Math.sqrt(f3));
 
         return cos;
     }

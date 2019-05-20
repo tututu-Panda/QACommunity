@@ -68,6 +68,33 @@ public class FrontIndexAction extends BaseAction{
 
 
     /**
+     * 搜索获取
+     * @return
+     */
+    public String getSearchQuestion() {
+
+        Map<String, Object> map = new HashMap<>();
+
+        String page = request.getParameter("page");     //页码
+        String orderType = request.getParameter("orderType");   //排序方式
+
+        String searchValue = request.getParameter("search");
+
+        int topic = 0;   // 话题类型
+        if(request.getParameter("to_id") != null){
+            topic = Integer.parseInt(request.getParameter("to_id"));
+            ValueStack s = ServletActionContext.getContext().getValueStack();
+            s.set("to_id",topic);
+        }
+
+        quesList = frontIndexService.getSearchQues(page,orderType,topic,searchValue);
+
+
+        return "search";
+    }
+
+
+    /**
      * 单个问题的详情页面
      * @return
      */

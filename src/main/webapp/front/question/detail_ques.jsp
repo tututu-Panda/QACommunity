@@ -268,7 +268,10 @@
                             count = '<i class="iconfont icon-svgmoban53"></i>暂无回复';
                     var dateTime = date + " " + time;
                     var headphoto = '<%=basePath %>/'+item.headPhoto+'';
-                    html = '<li>'+
+                    html =
+//                        '<span style="font-size: 15px; color: #1E9FFF;" ><i class="layui-icon" style="font-size: 30px; color: #1E9FFF;" >&#xe6c6;</i>   最佳回复</span> '+
+                        '<li>'+
+
                         '<div class="detail-about detail-about-reply">'+
                         '<a class="fly-avatar" href="">'+
                         '<img src="'+headphoto+'" alt=" ">'+

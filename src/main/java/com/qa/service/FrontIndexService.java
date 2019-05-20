@@ -21,4 +21,6 @@ public interface FrontIndexService {
     List getReplyRank();
 
     List getRandomQues();
+
+    Map getSearchQues(String page, String orderType, int topic, String searchValue);
 }
