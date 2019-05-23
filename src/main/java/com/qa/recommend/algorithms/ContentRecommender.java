@@ -62,16 +62,16 @@ public class ContentRecommender {
             ArrayList quesList = (ArrayList) qaBackQuesDao.getQuesByTopicId(entry.getKey(),logList);
 
 
-            double cos = 0;
+            double cos;
 
             // 计算dfidf
             for(int i = 0; i < quesList.size(); i++){
                 Object[] obj = (Object[]) quesList.get(i);
                 int qId = (int) obj[1];
                 List<Keyword> key = tf.getTFIDF((String) obj[0], 5);      // 获取TFIDF
-                System.out.println(qId+":"+key);
+//                System.out.println(qId+":"+key);
                 cos = this.getMatchValue(entry.getValue(),key);
-                if(cos != 0){
+                if(!Double.isNaN(cos) ){
                     quesIds.put(qId,cos);
                 }
             }

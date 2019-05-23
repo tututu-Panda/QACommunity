@@ -217,7 +217,7 @@ public class FrontIndexServiceImpl implements FrontIndexService{
     }
 
     @Override
-    public List getRandomQues() {
-        return frontIndexDao.gerRandomQues();
+    public List getRandomQues(ArrayList<Integer>... list) {
+        return frontIndexDao.gerRandomQues(list);
     }
 }

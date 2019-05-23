@@ -14,6 +14,10 @@
 %>
 <%
     Map frontUser = (Map) session.getAttribute("frontUser");
+    int st = 0;
+    if(frontUser != null){
+        st = (int) frontUser.get("status");
+    }
 %>
 
 
@@ -115,7 +119,6 @@
                 <% if(frontUser != null){ %>
                 <%--回复框--%>
                 <%
-                    int st = (int) frontUser.get("status");
                     if(st == 1){
                 %>
                     <div class="layui-form layui-form-pane">
@@ -255,7 +258,7 @@
             count = data.count;
             curr =data.page;
             var html;
-            var st = <%=frontUser.get("status")%>;
+            var st = <%=st %>;
             if(commList.length != 0) {
 
                 $.each(commList, function(index, item) {

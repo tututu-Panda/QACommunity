@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: 3tu
   Date: 2019/1/26
@@ -11,11 +11,23 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
+    Map frontUser = (Map) session.getAttribute("frontUser");
+    int st = 0;
+    if(frontUser != null){
+        st =1;
+    }
+
 %>
 <div class="layui-col-md4">
 
     <div class="fly-panel">
+        <% if(st == 0){
+
+        %>
         <h3 class="fly-panel-title">随便看看</h3>
+        <%}else{%>
+        <h3 class="fly-panel-title">为您推荐</h3>
+        <%}%>
         <ul class="fly-panel-main fly-list-static" id="ranQues">
             <%--js添加随机帖子--%>
         </ul>

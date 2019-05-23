@@ -1,5 +1,6 @@
 package com.qa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface FrontIndexService {
 
     List getReplyRank();
 
-    List getRandomQues();
+    List getRandomQues(ArrayList<Integer>... list);
 
     Map getSearchQues(String page, String orderType, int topic, String searchValue);
 }

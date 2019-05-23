@@ -1,14 +1,19 @@
 package com.qa.action;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
+import com.qa.recommend.algorithms.ContentRecommender;
+import com.qa.recommend.reWrite.Keyword;
 import com.qa.service.FrontIndexService;
 import com.qa.service.QaBackQuesService;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +31,9 @@ public class FrontIndexAction extends BaseAction{
 
     @Resource
     private QaBackQuesService qaBackQuesService;
+
+    @Autowired
+    private ContentRecommender contentRecommender;
 
     private Map quesList  = null;       //问题列表
 
@@ -159,7 +167,24 @@ public class FrontIndexAction extends BaseAction{
      * @return
      */
     public String randomQuestion(){
-        quesInfo = frontIndexService.getRandomQues();
+        Map session = ActionContext.getContext().getSession();
+
+        // 如果用户登录的话进行内容推荐
+        if(session.containsKey("frontUser")){
+            Map user = (Map) session.get("frontUser");
+            int id = (int) user.get("id");
+
+            // 获取推荐信息，转换为id集合
+            Map<Integer, Double> content = contentRecommender.recommend(id);
+            ArrayList<Integer> ids = new ArrayList<>();
+            for(Map.Entry<Integer, Double> entry : content.entrySet()){
+                ids.add(entry.getKey());
+            }
+
+            quesInfo = frontIndexService.getRandomQues(ids);
+        }else{
+            quesInfo = frontIndexService.getRandomQues();
+        }
         return "randomQues";
     }
 

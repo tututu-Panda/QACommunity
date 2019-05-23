@@ -4,6 +4,7 @@ package com.qa.dao;
  *
  */
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public interface FrontIndexDao {
 
     List getReplyRank();
 
-    List gerRandomQues();
+    List gerRandomQues(ArrayList<Integer>... list);
 
     int getViews(int ques_id);
 

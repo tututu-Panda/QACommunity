@@ -1,15 +1,16 @@
 package com.qa.dao.impl;
 
 import com.qa.dao.FrontIndexDao;
+import com.qa.recommend.algorithms.ContentRecommender;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * 前台数据库交互层
@@ -175,18 +176,54 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
     }
 
     /**
+     * 1. 根据用户获取推荐信息
+     * 2. 推荐信息不足时，随机获取
      * 获取随机问题
      * @return
      */
     @Override
-    public List gerRandomQues() {
-        int limit = 5;
-        String hql = " SELECT q_id , title FROM qa_question WHERE checked = 0 AND q_id >=" +
-                " ((SELECT MAX(q_id) FROM qa_question)-(SELECT MIN(q_id) FROM qa_question)) * RAND() " +
-                "+ (SELECT MIN(q_id) FROM qa_question)  LIMIT ? ";
-        Query query = sessionFactory.getCurrentSession().createSQLQuery(hql);
-        query.setInteger(0,limit);
-        return query.list();
+    public List gerRandomQues(ArrayList<Integer>... list) {
+
+        final int limitSize = 5;        // 最多推荐数目5条
+
+        List result = new ArrayList();
+
+        // 首先判断是否传过来问题id集合，以及该集合长度
+        String hql;
+        int limit ;
+       Query query;
+
+        if(list.length > 0){
+            hql  = " SELECT q_id , title FROM qa_question WHERE checked = 0 AND q_id  in (:list)";
+            query = sessionFactory.getCurrentSession().createSQLQuery(hql);
+            query.setParameterList("list",list[0]);
+            limit = limitSize-query.list().size();          // 去掉未过审的问题
+            result.addAll(query.list());
+
+            hql  = " SELECT distinct  q_id , title FROM qa_question WHERE checked = 0 AND q_id NOT IN (:qids)AND q_id >=" +
+                    " ((SELECT MAX(q_id) FROM qa_question)-(SELECT MIN(q_id) FROM qa_question)) * RAND() " +
+                    "+ (SELECT MIN(q_id) FROM qa_question)  LIMIT ?  ";
+
+            query = sessionFactory.getCurrentSession().createSQLQuery(hql);
+            query.setParameterList("qids",list[0]);
+            query.setInteger(0,limit);
+            result.addAll(query.list());
+            return result.subList(0,5);
+
+        }
+        // 游客或未产生用户图像时
+        else {
+            limit = limitSize;
+            // 根据limit值随机选择
+            hql = " SELECT distinct  q_id , title FROM qa_question WHERE checked = 0 AND q_id >=" +
+                    " ((SELECT MAX(q_id) FROM qa_question)-(SELECT MIN(q_id) FROM qa_question)) * RAND() " +
+                    "+ (SELECT MIN(q_id) FROM qa_question)  LIMIT ?  ";
+            query = sessionFactory.getCurrentSession().createSQLQuery(hql);
+            query.setInteger(0, limit);
+            result.addAll(query.list());
+
+            return result;
+        }
     }
 
     /**
@@ -211,6 +248,14 @@ public class FrontIndexDaoImpl implements FrontIndexDao {
         query.executeUpdate();
     }
 
+    /**
+     * 搜索问题
+     * @param page
+     * @param orderType
+     * @param topic
+     * @param search
+     * @return
+     */
     public  Map getSearchQues(int page, int orderType, int topic, String search){
         int firstRe = 0;            // 查询的第一个结果
         int count = 0;              // 查询到总数
