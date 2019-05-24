@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="<%=basePath %>/static/plugins/layui/css/layui.css">
     <link rel="stylesheet" href="<%=basePath %>static/css/global.css">
     <link rel="stylesheet" href="<%=basePath %>static/css/dashboard.css">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
+    <link rel="stylesheet" href="<%=basePath %>static/css/font.css" media="all" />
 
 </head>
 

@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: 3tu
-  Date: 2017/12/13
+  Date: 2018/12/13
   Time: 22:06
   To change this template use File | Settings | File Templates.
 --%>
@@ -113,7 +113,7 @@
             ,range: true
             ,done:function(value, date, endDate){
                 // console.log(date);
-                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+//                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
                 date = date['year']+"-"+date['month']+"-"+date['date']+" "+date['hours']+":"+""+date['minutes']+":"+date['seconds'];
                 endDate = endDate['year']+"-"+endDate['month']+"-"+endDate['date']+" "+endDate['hours']+":"+""+endDate['minutes']+":"+endDate['seconds'];
 
@@ -278,6 +278,14 @@
                     ids.push(chooseData[i].quesId);
                 }
 
+                if(ids.length == 0){
+                    layer.msg("请先选择数据!",{
+                        icon:8,
+                        timeout:2000
+                    });
+                    return ;
+                }
+
                 $.ajax({
                     url: '<%=path%>/admin/qaBackQues_deleteQues.action'
                     ,traditional:true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])
@@ -343,7 +351,13 @@
                 for (var i = 0; i < chooseData.length; i++) {
                     ids.push(chooseData[i].quesId);
                 }
-
+                if(ids.length == 0){
+                    layer.msg("请先选择数据!",{
+                        icon:8,
+                        timeout:2000
+                    });
+                    return ;
+                }
                 $.ajax({
                     url: '<%=path%>/admin/qaBackQues_checkQues.action'
                     ,traditional:true   //  将数组序列化,防止传参数时将数组分割(id:ids[0] id: ids[1])

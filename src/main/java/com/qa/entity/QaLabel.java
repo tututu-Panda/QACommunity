@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- *Create by 3tu on 2017/12/5
+ *Create by 3tu on 2018/12/5
  */
 @Entity
 @Table(name = "qa_label", schema = "qacommunity", catalog = "")

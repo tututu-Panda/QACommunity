@@ -3,7 +3,7 @@
 <%@ page import="com.qa.entity.QaBackUser" %><%--
   Created by IntelliJ IDEA.
   User: 3tu
-  Date: 2017/12/6
+  Date: 2018/12/6
   Time: 22:00
   To change this template use File | Settings | File Templates.
 --%>
@@ -44,13 +44,13 @@
             padding: 0;
         }
         #iframepage {
-            /*min-height:900px;*/
+            height:800px;
         }
     </style>
 </head>
-<body>
+<body style="overflow-y:scroll;">
 
-<div class="wrapper">
+<div class="wrapper" style="height:auto">
 
     <%--侧边栏--%>
     <div class="sidebar" data-color="black" data-image="<%=basePath %>/static/images/full-screen-image-1.jpg">
@@ -122,7 +122,6 @@
                     <div class="collapse" id="checksExamples">
                         <ul class="nav">
                             <li><a href="<%=basePath%>/admin/qaBackQues_checkContent.action"  target="iframepage">内容审核</a></li>
-                            <li><a href="<%=basePath%>/admin/qaLog_logList.action"  target="iframepage">回复审核</a></li>
                         </ul>
                     </div>
                 </li>
@@ -166,12 +165,12 @@
         <%--顶部栏--%>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-minimize">
-                    <button id="minimizeSidebar" class="btn btn-info btn-fill btn-round btn-icon">
-                        <i class="fa fa-ellipsis-v visible-on-sidebar-regular"></i>
-                        <i class="fa fa-navicon visible-on-sidebar-mini"></i>
-                    </button>
-                </div>
+                <%--<div class="navbar-minimize">--%>
+                    <%--<button id="minimizeSidebar" class="btn btn-info btn-fill btn-round btn-icon">--%>
+                        <%--<i class="fa fa-ellipsis-v visible-on-sidebar-regular"></i>--%>
+                        <%--<i class="fa fa-navicon visible-on-sidebar-mini"></i>--%>
+                    <%--</button>--%>
+                <%--</div>--%>
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -179,36 +178,20 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard PRO</a>
+                    <a class="navbar-brand" href="#">控制面板</a>
                 </div>
                 <div class="collapse navbar-collapse">
 
-                    <form class="navbar-form navbar-left navbar-search-form" role="search">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            <input type="text" value="" class="form-control" placeholder="Search...">
-                        </div>
-                    </form>
+                    <%--<form class="navbar-form navbar-left navbar-search-form" role="search">--%>
+                        <%--<div class="input-group">--%>
+                            <%--<span class="input-group-addon"><i class="fa fa-search"></i></span>--%>
+                            <%--<input type="text" value="" class="form-control" placeholder="Search...">--%>
+                        <%--</div>--%>
+                    <%--</form>--%>
 
                     <ul class="nav navbar-nav navbar-right">
 
-                        <%--<li class="dropdown">--%>
-                            <%--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--%>
-                                <%--<i class="fa fa-bell-o"></i>--%>
-                                <%--<span class="notification">5</span>--%>
-                                <%--<p class="hidden-md hidden-lg">--%>
-                                    <%--Notifications--%>
-                                    <%--<b class="caret"></b>--%>
-                                <%--</p>--%>
-                            <%--</a>--%>
-                            <%--<ul class="dropdown-menu">--%>
-                                <%--<li><a href="#">Notification 1</a></li>--%>
-                                <%--<li><a href="#">Notification 2</a></li>--%>
-                                <%--<li><a href="#">Notification 3</a></li>--%>
-                                <%--<li><a href="#">Notification 4</a></li>--%>
-                                <%--<li><a href="#">Another notification</a></li>--%>
-                            <%--</ul>--%>
-                        <%--</li>--%>
+
 
                         <li class="dropdown dropdown-with-icons">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -243,8 +226,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="layout-iframe-size">
-                        <iframe src="<%=basePath %>/admin/dashboard.jsp" id="iframepage" name="iframepage" frameBorder=0 scrolling=no width="100%"
-                                onload="ChangeIfmHeight()">
+                        <iframe src="<%=basePath %>/admin/dashboard.jsp" id="iframepage" name="iframepage" frameBorder=0 scrolling width="100%">
                         </iframe>
                     </div>
 
@@ -298,87 +280,12 @@
 <script src="<%=basePath %>/static/plugins/js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="<%=basePath %>/static/plugins/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
-<%--<script src="<%=basePath %>/static/plugins/js/moment.min.js"></script>--%>
-
-<!--  Date Time Picker Plugin is included in this js file -->
-<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-datetimepicker.js"></script>--%>
-
-<!--  Select Picker Plugin -->
-<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-selectpicker.js"></script>--%>
-
-<!--  Checkbox, Radio, Switch and Tags Input Plugins -->
-<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-c/heckbox-radio-switch-tags.js"></script>--%>
-
-<!--  Charts Plugin -->
-<%--<script src="<%=basePath %>/static/plugins/js/chartist.min.js"></script>--%>
 
 <!--  Notifications Plugin    -->
 <script src="<%=basePath %>/static/plugins/js/bootstrap-notify.js"></script>
 
-<!-- Sweet Alert 2 plugin -->
-<%--<script src="<%=basePath %>/static/plugins/js/sweetalert2.js"></script>--%>
-
-<!-- Vector Map plugin -->
-<%--<script src="<%=basePath %>/static/plugins/js/jquery-jvectorm/ap.js"></script>--%>
-
-<!--  Google Maps Plugin    -->
-<%--<script src="<%=basePath %>/static/plugins/js/aa743e8f448/a4792bad10d201a7080f6.js"></script>--%>
-
-<!-- Wizard Plugin    -->
-<%--<script src="<%=basePath %>/static/plugins/js/jquery.bootstrap.wizard.min.js"></script>--%>
-
-<!--  Bootstrap Table Plugin    -->
-<%--<script src="<%=basePath %>/static/plugins/js/bootstrap-table.js"></script>--%>
-
-<!--  Plugin for DataTables.net  -->
-<%--<script src="<%=basePath %>/static/plugins/js/jquery.datatables.js"></script>--%>
-
-
-<!--  Full Calendar Plugin    -->
-<%--<script src="<%=basePath %>/static/plugins/js/fullcalendar.min.js"></script>--%>
-
-<!-- Light Bootstrap Dashboard Core javascript and methods -->
-<%--<script src="<%=basePath %>/static/plugins/js/light-bootstrap-dashboard.js"></script>--%>
-<%--<script src="<%=basePath %>/static/plugins/js/layer/layer.js"></script>--%>
-<%--<script src="<%=basePath %>/static/plugins/js/jquery.validate.min.js"></script>--%>
-
-<!--   Sharrre Library    -->
-<%--<script src="<%=basePath %>/static/plugins/js/jquery.sharrre.js"></script>--%>
-<%--<script src="<%=basePath %>/static/plugins/js/demo.js"></script>--%>
 </body>
-<script type="text/javascript">
-    $(document).ready(function(){
 
-//        demo.initDashboardPageCharts();
-//        demo.initVectorMap();
-
-        $.notify({
-            icon: 'pe-7s-bell',
-            message: "<b>Hello, </b>&nbsp;&nbsp;- 欢迎登录Q&A问答社区后台！"
-
-        },{
-            type: 'info',
-            timer: 4000
-        });
-
-    });
-
-    //iframe页面高度调整，暂时最好的解决方案 :)
-    function ChangeIfmHeight() {
-        if ($(window.document).find("#iframepage")) {
-            var iframeObj = $(window.document).find("#iframepage");
-            var thisheight = $(document).height();
-            iframeObj .height(thisheight);
-        }
-    }
-    window.onresize=function(){
-        ChangeIfmHeight();
-
-    }
-
-
-</script>
 
 </html>
 

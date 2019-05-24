@@ -230,7 +230,14 @@
                 for (var i = 0; i < chooseData.length; i++) {
                     ids.push(chooseData[i].quesId);
                 }
-                console.log(ids);
+//                console.log(ids);
+                if(ids.length == 0){
+                    layer.msg("请先选择数据!",{
+                        icon:8,
+                        timeout:2000
+                    });
+                    return ;
+                }
 
                 $.ajax({
                     url: '<%=path%>/admin/qaBackQues_checkQues.action'
@@ -296,7 +303,14 @@
                 for (var i = 0; i < chooseData.length; i++) {
                     ids.push(chooseData[i].quesId);
                 }
-                console.log(ids);
+//                console.log(ids);
+                if(ids.length == 0){
+                    layer.msg("请先选择数据!",{
+                        icon:8,
+                        timeout:2000
+                    });
+                    return ;
+                }
 
                 $.ajax({
                     url: '<%=path%>/admin/qaBackQues_checkQues.action'

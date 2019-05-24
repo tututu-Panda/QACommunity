@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: 3tu
-  Date: 2017/12/22
+  Date: 2018/12/22
   Time: 17:19
   To change this template use File | Settings | File Templates.
 --%>
@@ -97,12 +97,7 @@
 <div style="z-index:-1;">
 <s:form id="updateBackInfo" action="BackInfo_updateInfo" method="list">
 <div class="BackInfo" style="width: 700px; height:700px; ">
-    <%--<div class="form-info2">--%>
-            <%--<label class="label">头像：</label>--%>
-            <%--<div style="width:100px;height: 100px;">--%>
-            <%--<img style="width:100px;height:100px;margin-left: 100px; margin-top: -40px;" src="<%=basePath%>${list[0].photo}">--%>
-            <%--</div>--%>
-    <%--</div>--%>
+
         <div>
             <form class="layui-from">
             <div class="layui-form-item">
@@ -196,7 +191,7 @@
                 <input name="password" type="password" placeholder="请输入内容" class="input-text"  value="">
             </div>
             </div>
-            <div style="float:left;margin-left: 100px;margin-top: 30px;">
+            <div style="    float:left;margin-left: 100px;margin-top: 30px;">
             <div class="XGXX"> <a  href="javascript:document.getElementById('updatePassword').submit()" onClick="return confirm('确定修改?')" >提交</a></div>
             <div class="XGXX" style="margin-left: 30px;" onclick="updatepassword1()"> 取消</div>
         </s:form>

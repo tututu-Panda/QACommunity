@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *Create by 3tu on 2017/12/13
+ *Create by 3tu on 2018/12/13
  */
 public interface QaBackQuesService {
     public boolean addQues(QaQuestion qaQuestion);

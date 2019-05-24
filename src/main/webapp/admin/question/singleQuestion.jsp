@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: 3tu
-  Date: 2017/12/17
+  Date: 2018/12/17
   Time: 14:51
   To change this template use File | Settings | File Templates.
 --%>
@@ -149,7 +149,7 @@
 
 
 </head>
-<body>
+<body style="overflow-y:scroll;">
     <div class="">
             <blockquote class="layui-elem-quote quote1">
 
@@ -235,7 +235,10 @@
                     </blockquote>
                     <div class="comment_html_style">
                         <div class="comment_box ui comments " id="comment_html"><h3 class="ui dividing header">评论</h3>
-
+                        </div>
+                        <div style="text-align: center">
+                            <div class="" id="pages">
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -251,55 +254,66 @@
 <%--<script src="<%=basePath %>/static/js/basigleques.js"></script>--%>
 
 <script type="text/javascript">
-    layui.use(['table','laytpl','layer'], function() {
-        var table = layui.table;
-        var laytpl = layui.laytpl;
+    layui.use(['table','laytpl','layer','laypage'], function() {
         var layer = layui.layer;
+        var laypage = layui.laypage;
+
+        var count=5;
+        var curr=1;
 
 
 
         var quesId = $('#quesId').val();        //问题id
-        //初始化ajax加载浏览图表
-        $.ajax({
-            url: '<%=path%>/admin/qaBackQues_getBrowForDate.action'
-            , data: {'browdate': "", 'qId':quesId}
-            , dataType: 'json'
-            // 返回成功的
-            , success: function (data) {
-                if (data.status == "0") {
-                    browseChart(data);
-                } else {
+
+        InitComment();
+
+        function InitComment(page){
+            $.ajax({
+                url: '<%=path%>/admin/qaBackQues_getComment.action'
+                , data: {'qId':quesId,'page':page}
+                , dataType: 'json'
+                // 返回成功的
+                , success: function (data) {
+                    if (data.status == "0") {
+                        getComment_one(data,page);
+                        initPage();
+                    } else {
+
+                    }
+                }
+                ,complete:function() {
 
                 }
-            }
-//            ,complete:function() {
-//                ChangeIfmHeight();
-//            }
-        });
-        //初始化ajax加载评论
-        $.ajax({
-            url: '<%=path%>/admin/qaBackQues_getComment.action'
-            , data: {'qId':quesId}
-            , dataType: 'json'
-            // 返回成功的
-            , success: function (data) {
-                if (data.status == "0") {
-                    getComment_one(data);
-                } else {
+            });
+        }
 
+
+
+        function initPage() {
+            laypage.render({
+                elem: 'pages' //注意，这里的是 ID，不用加 # 号
+                ,count: count //    数据总数，从服务端得到
+                ,limit: 5
+                ,theme: '#1E9FFF'
+                ,curr: curr
+                ,jump: function(obj, first) {
+                    var curr = obj.curr;
+                    if(!first) {
+                        InitComment(curr);
+                    }
                 }
-            }
-            ,complete:function() {
-                ChangeIfmHeight();   //动态获取数据后重新改变页面高度
-            }
-        });
+            });
+        }
 
         /**
          *获取到json数据对其进行组装，嵌入评论页
          * */
-        function getComment_one(data) {
+        function getComment_one(data,page) {
+            $("#comment_html").html("");
             var commList = data.commList;
-            //$("#comment_html").html("");        //清空初始化
+            count = data.count;
+            curr =data.page;
+
             var html;
             $.each(commList, function(index, item) {
                 var date = new Date(item.createDate['time']).toLocaleDateString();
@@ -386,11 +400,11 @@
         //ajax加载完数据后重新修改iframe高度
         // 修改iframe的高度值
         function ChangeIfmHeight() {
-            if ($(window.parent.document).find("#iframepage")) {
-                var iframeObj = $(window.parent.document).find("#iframepage");
-                var thisheight = $(document).height();
-                iframeObj .height(thisheight);
-            }
+//            if ($(window.parent.document).find("#iframepage")) {
+//                var iframeObj = $(window.parent.document).find("#iframepage");
+//                var thisheight = $(document).height();
+//                iframeObj .height(thisheight);
+//            }
         }
 
     });

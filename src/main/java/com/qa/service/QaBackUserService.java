@@ -5,7 +5,7 @@ import com.qa.entity.QaBackUser;
 import java.util.List;
 
 /**
- *Create by 3tu on 2017/11/30
+ *Create by 3tu on 2018/11/30
  */
 public interface QaBackUserService {
 
