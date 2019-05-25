@@ -1,10 +1,14 @@
-
+<%@ page import="java.util.Map" %>
+<%@ page import="com.qa.entity.QaBackUser" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
+    QaBackUser backUser = (QaBackUser ) session.getAttribute("qaBackUser");
+    int role =  backUser.getRole();
 
 %>
 <html>
@@ -34,6 +38,7 @@
                     </a>
                 </div>
 
+                <%if(role == 0){%>
                 <div class="layui-col-xs6 layui-col-sm4 layui-col-md2 layui-col-lg2">
                     <a href="<%=basePath %>/admin/qaBackTopic_FindAllTopic.action" title="话题管理" class="featured-app"
                        data-icon="&#xe638;">
@@ -43,6 +48,7 @@
                         <div class="featured-app-name">话题管理</div>
                     </a>
                 </div>
+                <%}%>
 
                 <div class="layui-col-xs6 layui-col-sm4 layui-col-md2 layui-col-lg2">
                     <a href="<%=basePath%>/admin/qaCommunity_communityList.action" title="用户管理" class="featured-app"
@@ -54,6 +60,7 @@
                     </a>
                 </div>
 
+                <%if(role == 0){%>
                 <div class="layui-col-xs6 layui-col-sm4 layui-col-md2 layui-col-lg2">
                     <a href="<%=basePath%>/admin/qaLog_logList.action" title="日志查看" class="featured-app"
                        data-icon="&#xe60a;">
@@ -63,7 +70,7 @@
                         <div class="featured-app-name">日志查看</div>
                     </a>
                 </div>
-
+                <%}%>
                 <div class="layui-col-xs6 layui-col-sm4 layui-col-md2 layui-col-lg2">
                     <a href="<%=basePath %>/admin/qaBackQues_allQuestionView.action" title="问题管理" class="featured-app"
                        data-icon="&#xe613;">

@@ -35,8 +35,8 @@ public class DashBoardServiceImpl implements DashBoardService {
      * @return
      */
     @Override
-    public Map getArticleInfo() {
-        return qaBackQuesDao.getCheckQuesAndAllQues();
+    public Map getArticleInfo(int topic) {
+        return qaBackQuesDao.getCheckQuesAndAllQues(topic);
     }
 
     /**

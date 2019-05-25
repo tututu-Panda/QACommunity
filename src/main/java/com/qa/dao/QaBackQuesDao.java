@@ -30,7 +30,7 @@ public interface QaBackQuesDao {
      * @param rangeDate
      * @return
      */
-    public Map getQuestionList(int page, int limits, String[] rangeDate);
+    public Map getQuestionList(int page, int limits, String[] rangeDate, int role);
 
     /**
      * 通过问题表中ids来获取该问题包含哪些标签
@@ -79,11 +79,11 @@ public interface QaBackQuesDao {
 
     boolean checkLabel(int l_id);
 
-    Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check);
+    Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check, int topic);
 
     boolean checkQues(List<Integer> ids, int check);
 
-    Map getCheckQuesAndAllQues();
+    Map getCheckQuesAndAllQues(int topic);
 
     Map getLatestArticle();
 

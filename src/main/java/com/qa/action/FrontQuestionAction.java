@@ -192,7 +192,7 @@ public class FrontQuestionAction extends BaseAction {
         if(qaQuestion !=null){
             qaQuestion.setCreateDate(timestamp);
             qaQuestion.setCreateUser(id);
-            qaQuestion.setChecked(1);   // 设置为未审核状态
+            qaQuestion.setChecked(0);   // 设置为审核状态
             System.out.println(qaQuestion.getLabelIds() );
 
             b = frontQuestionService.addQues(qaQuestion);

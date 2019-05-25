@@ -105,7 +105,7 @@
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; 2017 <a href="#"> CUIT </a>, 拥有一切解释权
+                    &copy; 2019 <a href="#"> CUIT </a>, 拥有一切解释权
                 </p>
             </div>
         </footer>
@@ -197,8 +197,13 @@
                         skin: 'layer-ext-moon'
                     });
                     window.location.href = "<%=path%>/admin/qaBackUser_dashboard.action";
-                }else {
+                }else if(data2.status == "1") {
                     layer.msg("用户名或密码错误！", {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }else if(data2.status == "2") {
+                    layer.msg("该账户已被禁用！", {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });

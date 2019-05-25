@@ -1,5 +1,7 @@
 package com.qa.action;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.qa.entity.QaBackUser;
 import com.qa.service.DashBoardService;
 import net.sf.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -45,7 +47,15 @@ public class DashBoardAction extends BaseAction{
     public String getArticleInfo(){
         Map<String, Object> map;    // 定义map集合存如入返回json的集合
 
-        map = dashBoardService.getArticleInfo();
+        // 根据用户角色，获取对应话题相关问题
+        Map session = ActionContext.getContext().getSession();
+        QaBackUser backUser = (QaBackUser) session.get("qaBackUser");
+        int role = backUser.getRole();
+        int topic = 0;
+        if(role == 1){
+            topic = backUser.getTopic();
+        }
+        map = dashBoardService.getArticleInfo(topic);
 
         List = JSONObject.fromObject(map);
         return "getAllArticle";

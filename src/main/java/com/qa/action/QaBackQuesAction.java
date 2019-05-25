@@ -3,6 +3,7 @@ package com.qa.action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.qa.entity.BackQuestion;
+import com.qa.entity.QaBackUser;
 import com.qa.entity.QaQuestion;
 import com.qa.service.QaBackQuesService;
 import net.sf.json.JSON;
@@ -75,6 +76,15 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
         limit = ((String[]) params.get("limit"))[0];
         rangeDate[0] = ((String[]) params.get("startDate"))[0];       // 请求时间范围
 
+        // 根据用户角色，获取对应话题相关问题
+        Map session = ActionContext.getContext().getSession();
+        QaBackUser backUser = (QaBackUser) session.get("qaBackUser");
+        int role = backUser.getRole();
+        int topic = 0;
+        if(role == 1){
+            topic = backUser.getTopic();
+        }
+
         // 如果包含结尾时间
         if(params.containsKey("endDate")){
             rangeDate[1] = ((String[]) params.get("endDate"))[0];
@@ -84,7 +94,7 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
             map.put("code","1");
             map.put("msg","参数返回错误!");
         }else {
-            receiveMap = qaBackQuesService.getQuestionList(pages,limit, rangeDate);
+            receiveMap = qaBackQuesService.getQuestionList(pages,limit, rangeDate,topic);
             map.put("code","0");  //成功
             map.put("msg","");
             map.put("count",receiveMap.get("count"));
@@ -210,6 +220,15 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
             limit = ((String[]) params.get("limit"))[0];
             rangeDate[0] = ((String[]) params.get("startDate"))[0];       // 请求时间范围
 
+            // 根据用户角色，获取对应话题相关问题
+            Map session = ActionContext.getContext().getSession();
+            QaBackUser backUser = (QaBackUser) session.get("qaBackUser");
+            int role = backUser.getRole();
+            int topic = 0;
+            if(role == 1){
+                topic = backUser.getTopic();
+            }
+
             // 如果包含结尾时间
             if(params.containsKey("endDate")){
                 rangeDate[1] = ((String[]) params.get("endDate"))[0];
@@ -225,7 +244,7 @@ public class QaBackQuesAction extends BaseAction implements ModelDriven<QaQuesti
                 map.put("code","1");
                 map.put("msg","参数返回错误!");
             }else {
-                receiveMap = qaBackQuesService.getCheckQuestionList(pages,limit, rangeDate,check);
+                receiveMap = qaBackQuesService.getCheckQuestionList(pages,limit, rangeDate,check,topic);
                 map.put("code","0");  //成功
                 map.put("msg","");
                 map.put("count",receiveMap.get("count"));

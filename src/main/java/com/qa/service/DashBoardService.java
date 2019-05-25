@@ -11,7 +11,7 @@ import java.util.Map;
 public interface DashBoardService {
 
     public Map getUserInfo();
-    public Map getArticleInfo();
+    public Map getArticleInfo(int topic);
     public Map getLatestArticle();
 
 }

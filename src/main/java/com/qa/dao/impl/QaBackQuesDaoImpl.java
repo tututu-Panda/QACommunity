@@ -51,7 +51,7 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
      * 结果可以清晰显示，个人见解
      *
      */
-    public Map getQuestionList(int page, int limits, String[] rangeDate) {
+    public Map getQuestionList(int page, int limits, String[] rangeDate, int topic) {
         int firstRe = 0;            // 查询的第一个结果
         int count = 0;              // 查询到总数
         int pages = page - 1;           //页码
@@ -70,16 +70,32 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
          * 此处书写原生sql语句进行查询，注意sql语句的书写正确；
          * 左连接-连表查出问题列表并且查询各个问题的所属话题以及创建用户
          */
-        String sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.label_ids as labelIds,t1.create_date as createDate,t2.to_id as toId,t2.topic_name as topicName," +
-                "t3.account as account,t3.name as accountName from qa_question as t1 " +
-                " left join qa_topic t2 on t1.topic_id=t2.to_id" +
-                " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = 0 AND t1.create_date BETWEEN  ? and ?";
 
-//        String sql = "from QaQuestion  t1 left  join t1.topicId left  join fetch t1.createUser where t1.createUser between ? and ?";
+        String sql;
+        Query query;
 
-        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
-        query.setTimestamp(0,times[0]);
-        query.setTimestamp(1,times[1]);
+        if(topic != 0){
+            sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.label_ids as labelIds,t1.create_date as createDate,t2.to_id as toId,t2.topic_name as topicName," +
+                    "t3.account as account,t3.name as accountName from qa_question as t1 " +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                    " left join qa_front_user t3 on t1.create_user=t3.id" +
+                    " where t1.checked = 0 AND t1.topic_id = ?  AND t1.create_date BETWEEN  ? and ?";
+            query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+            query.setInteger(0,topic);
+            query.setTimestamp(1,times[0]);
+            query.setTimestamp(2,times[1]);
+        }else{
+            sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.label_ids as labelIds,t1.create_date as createDate,t2.to_id as toId,t2.topic_name as topicName," +
+                    "t3.account as account,t3.name as accountName from qa_question as t1 " +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                    " left join qa_front_user t3 on t1.create_user=t3.id" +
+                    " where t1.checked = 0 AND t1.create_date BETWEEN  ? and ?";
+            query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+            query.setTimestamp(0,times[0]);
+            query.setTimestamp(1,times[1]);
+        }
+
+
         List list = query.list();
         //获取到记录长度（总的页数）
         count = list.size();
@@ -320,7 +336,7 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
      * @return
      */
     @Override
-    public Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check) {
+    public Map getCheckQuestionList(int page, int limits, String[] rangeDate, int check, int topic) {
         int firstRe = 0;            // 查询的第一个结果
         int count = 0;              // 查询到总数
         int pages = page - 1;           //页码
@@ -339,17 +355,31 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
          * 此处书写原生sql语句进行查询，注意sql语句的书写正确；
          * 左连接-连表查出问题列表并且查询各个问题的所属话题以及创建用户
          */
-        String sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.create_date as createDate,t1.checked as checked , t2.to_id as toId,t2.topic_name as topicName," +
-                "t3.account as account,t3.name as accountName from qa_question as t1 " +
-                " left join qa_topic t2 on t1.topic_id=t2.to_id" +
-                " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = ? AND t1.create_date BETWEEN  ? and ? order BY  t1.checked";
 
-//        String sql = "from QaQuestion  t1 left  join t1.topicId left  join fetch t1.createUser where t1.createUser between ? and ?";
+        String sql;
+        Query query;
 
-        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
-        query.setInteger(0 ,check);
-        query.setTimestamp(1,times[0]);
-        query.setTimestamp(2,times[1]);
+        if(topic != 0){
+            sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.create_date as createDate,t1.checked as checked , t2.to_id as toId,t2.topic_name as topicName," +
+                    "t3.account as account,t3.name as accountName from qa_question as t1 " +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                    " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = ? AND t1.create_date BETWEEN  ? and ? AND t1.topic_id = ? order BY  t1.checked";
+            query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+            query.setInteger(0 ,check);
+            query.setTimestamp(1,times[0]);
+            query.setTimestamp(2,times[1]);
+            query.setInteger(3,topic);
+        }else{
+            sql = "select t1.q_id as qId,t1.title as qTitle,t1.detail as qDetail,t1.create_date as createDate,t1.checked as checked , t2.to_id as toId,t2.topic_name as topicName," +
+                    "t3.account as account,t3.name as accountName from qa_question as t1 " +
+                    " left join qa_topic t2 on t1.topic_id=t2.to_id" +
+                    " left join qa_front_user t3 on t1.create_user=t3.id where t1.checked = ? AND t1.create_date BETWEEN  ? and ? order BY  t1.checked";
+            query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+            query.setInteger(0 ,check);
+            query.setTimestamp(1,times[0]);
+            query.setTimestamp(2,times[1]);
+        }
+
         List list = query.list();
         //获取到记录长度（总的页数）
         count = list.size();
@@ -359,7 +389,6 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         query.setMaxResults(limits);
         list = query.list();
 
-//        System.out.println("limits"+limits);
 
         map.put("count",count);     //总数
         map.put("list",list);       //数据
@@ -367,45 +396,6 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
     }
 
 
-//    /**
-//     * 不通过该问题集合
-//     * @param ids
-//     * @return
-//     */
-//    @Override
-//    public boolean noPassQues(List<Integer> ids) {
-//        try{
-//            //不通过该问题
-//            String hql1 = "update QaQuestion set checked = 2 where qId in (:qIds)";
-//            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
-//
-//            int result1 = query1.setParameterList("qIds", ids).executeUpdate();
-//            return true;
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * 通过问题集合
-//     * @param ids
-//     * @return
-//     */
-//    @Override
-//    public boolean passQues(List<Integer> ids) {
-//        try{
-//            //不通过该问题
-//            String hql1 = "update QaQuestion set checked = 0 where qId in (:qIds)";
-//            Query query1 = sessionFactory.getCurrentSession().createQuery(hql1);
-//
-//            int result1 = query1.setParameterList("qIds", ids).executeUpdate();
-//            return true;
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 
     @Override
     public boolean checkQues(List<Integer> ids, int check) {
@@ -427,7 +417,7 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
     /**
      * 获取待审核文章数和文章总数
      */
-    public Map getCheckQuesAndAllQues(){
+    public Map getCheckQuesAndAllQues(int topic){
         Map map = new HashMap();
         String hql;
         Query query;
@@ -435,8 +425,14 @@ public class QaBackQuesDaoImpl implements QaBackQuesDao{
         long allQues = 0;
 
         // 查找待审核数
-        hql = "SELECT  count(*) FROM QaQuestion where checked = 1";
-        query = sessionFactory.getCurrentSession().createQuery(hql);
+        if(topic != 0){
+            hql = "SELECT  count(*) FROM QaQuestion where checked = 1 AND topicId  = ?";
+            query = sessionFactory.getCurrentSession().createQuery(hql);
+            query.setInteger(0,topic);
+        }else{
+            hql = "SELECT  count(*) FROM QaQuestion where checked = 1 ";
+            query = sessionFactory.getCurrentSession().createQuery(hql);
+        }
         checkQues = (long) query.list().get(0);
 
         // 查找总数

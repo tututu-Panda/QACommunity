@@ -63,7 +63,7 @@ public class QaCommunityUserDaoImpl implements QaCommunityUserDao {
 
         sql = "From QaFrontUser as qf ";
 
-        System.out.println(name);
+//        System.out.println(name);
 
         if(!name.equals("")){
             sql += "where qf.name like ?";

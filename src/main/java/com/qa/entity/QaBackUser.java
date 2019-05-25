@@ -13,7 +13,9 @@ public class QaBackUser {
     private byte sex;
     private String photo;
     private String email;
-    private byte status;
+    private int status;
+    private int role;
+    private int topic;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -88,12 +90,32 @@ public class QaBackUser {
 
     @Basic
     @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "role", nullable = false)
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    @Basic
+    @Column(name = "topic", nullable = false)
+    public int getTopic() {
+        return topic;
+    }
+
+    public void setTopic(int topic) {
+        this.topic = topic;
     }
 
     @Override
@@ -106,6 +128,8 @@ public class QaBackUser {
         if (id != that.id) return false;
         if (sex != that.sex) return false;
         if (status != that.status) return false;
+        if (role != that.role) return false;
+        if (topic != that.topic) return false;
         if (account != null ? !account.equals(that.account) : that.account != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -125,6 +149,8 @@ public class QaBackUser {
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (int) status;
+        result = 31 * result + (int) role;
+        result = 31 * result + (int) topic;
         return result;
     }
 }

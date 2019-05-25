@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 //注入服务
@@ -51,7 +52,37 @@ public class QaBackUserServiceImpl implements QaBackUserService{
     }
 
     @Override
+    public Map getBackUserList(String pages, String limit, String name) {
+        return qaUserDao.getBackUserList(pages,limit,name);
+    }
+
+    @Override
     public boolean saveUserPhoto(int id, String realPath) {
         return qaUserDao.saveUserPhoto(id, realPath);
+    }
+
+    @Override
+    public boolean banBackUser(int id, String status) {
+        return qaUserDao.banBackUser(id,status);
+    }
+
+    @Override
+    public boolean resetPassWord(int id, String password) {
+        return qaUserDao.resetPassWord(id, password);
+    }
+
+    @Override
+    public boolean updateBackUserTopic(int userId, int topicId) {
+        return qaUserDao.updateBackUserTopic(userId, topicId);
+    }
+
+    @Override
+    public boolean checkAccount(String account) {
+        return qaUserDao.checkAccount(account);
+    }
+
+    @Override
+    public boolean checkStatus(String account) {
+        return qaUserDao.checkStatus(account);
     }
 }

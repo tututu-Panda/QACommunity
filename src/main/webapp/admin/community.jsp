@@ -40,7 +40,6 @@
 
                 <div class="layui-input-block" style="display: inline-block;margin-left: 20px; min-height: inherit; vertical-align: bottom;">
                     <div class="layui-form-pane">
-                        <label class="layui-form-label" style="padding: 4px 15px;height:30px;">姓名关键字</label>
                             <input class="layui-input keywords" placeholder="姓名关键字" style="width: 300px;height:30px; line-height:30px;"  value="" >
                     </div>
                 </div>
@@ -96,6 +95,7 @@
     <a class="layui-btn layui-btn-sm layui-btn-warm"  lay-event="cancelDel">
             解除禁言
         {{#  } else  if(d.status == 1) { }}
+    </a>
     <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="del">
             禁言
         {{#  } }}

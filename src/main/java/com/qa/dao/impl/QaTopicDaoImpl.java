@@ -26,7 +26,7 @@ public class QaTopicDaoImpl implements QaTopicDao {
         Query query =sessionFactory.getCurrentSession().createQuery(hql);
         List<QaTopic> list=query.list();
         if(list.size()>0||list!=null){
-            System.out.println("寻找成功");
+//            System.out.println("寻找成功");
             return list;
 
         }

@@ -12,7 +12,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     Map session1 = ActionContext.getContext().getSession();
-    QaBackUser user = (QaBackUser) session1.get("qaBackUser");
+    QaBackUser backUser = (QaBackUser) session1.get("qaBackUser");
+    int role =  backUser.getRole();
 
 %>
 <!DOCTYPE html>
@@ -69,11 +70,11 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="<%=basePath %>/<%=user.getPhoto()%>" />
+                    <img src="<%=basePath %>/<%=backUser.getPhoto()%>" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" class="collapsed">
-                        <%=user.getName()%>
+                        <%=backUser.getName()%>
                         <b class="caret"></b>
                     </a>
 
@@ -105,8 +106,12 @@
                     </a>
                     <div class="collapse" id="formsExamples">
                         <ul class="nav">
+                            <%
+                                if(role == 0){
+                            %>
                             <li><a href="<%=basePath %>/admin/qaBackTopic_FindAllTopic.action" target="iframepage">话题管理</a></li>
                             <li><a href="<%=basePath %>/admin/qaBackLabel_getAllLabel.action" target="iframepage">标签管理</a></li>
+                            <%}%>
                             <li><a href="<%=basePath %>/admin/qaBackQues_allQuestionView.action" target="iframepage">内容管理</a></li>
                         </ul>
                     </div>
@@ -131,7 +136,6 @@
                     <a data-toggle="collapse" href="#tablesExamples">
                         <i class="pe-7s-news-paper"></i>
                         <p>用户管理
-
                             <b class="caret"></b>
                         </p>
                     </a>
@@ -139,6 +143,21 @@
                         <ul class="nav">
 
                             <li><a href="<%=basePath%>/admin/qaCommunity_communityList.action"  target="iframepage">社区用户管理</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <%if(role == 0){%>
+                <li>
+                    <a data-toggle="collapse" href="#backUser">
+                        <i class="pe-7s-gift"></i>
+                        <p>后台用户管理
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse"  id="backUser">
+                        <ul class="nav">
+                            <li><a href="<%=basePath%>/admin/qaBackUser_backUserList.action"  target="iframepage">后台用户管理</a></li>
                         </ul>
                     </div>
                 </li>
@@ -157,6 +176,7 @@
                     </div>
                 </li>
 
+                <%}%>
             </ul>
         </div>
     </div>
@@ -288,5 +308,15 @@
 
 
 </html>
+<script>
+    //退出函数路径设置
+    function delcfm(url) {
+        $('#url').val(url);//给会话中的隐藏属性URL赋值
+        $('#delcfmModel').modal();
+    }
+    function urlSubmit(){
+        var url=$.trim($("#url").val());//获取会话中的隐藏属性URL
+        window.location.href=url;
+    }
 
-
+</script>

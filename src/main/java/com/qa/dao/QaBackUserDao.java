@@ -4,6 +4,7 @@ package com.qa.dao;
 import com.qa.entity.QaBackUser;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -49,4 +50,16 @@ public interface QaBackUserDao {
     public List getQaUserList();
 
     boolean saveUserPhoto(int id, String realPath);
+
+    Map getBackUserList(String pages, String limit, String name);
+
+    boolean banBackUser(int id, String status);
+
+    boolean resetPassWord(int id, String password);
+
+    boolean updateBackUserTopic(int userId, int topicId);
+
+    boolean checkAccount(String account);
+
+    boolean checkStatus(String status);
 }

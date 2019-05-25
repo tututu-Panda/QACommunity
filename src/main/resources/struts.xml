@@ -26,8 +26,35 @@
                 <param name="root">msg</param>
             </result>
 
+            <result name="getBackUserList" type="json">
+                <param name="root">data</param>
+            </result>
+
+            <result name="banBackUser" type="json">
+                <param name="root">data</param>
+            </result>
+
+            <result name="resetPassWord" type="json">
+                <param name="root">data</param>
+            </result>
+
+            <result name="updateBackUserTopic" type="json">
+                <param name="root">data</param>
+            </result>
+
+            <result name="checkAccount" type="json">
+                <param name="root">data</param>
+            </result>
+
+            <result name="addBackUserForm" type="json">
+                <param name="root">data</param>
+            </result>
+
             <result name="dashboard">/admin/common/layout.jsp</result>
             <result name="userLogin">/admin/login.jsp</result>
+            <result name="backUserList">/admin/backUser/backUser.jsp</result>
+            <result name="getTopicList">/admin/backUser/editUserTopic.jsp</result>
+            <result name="addBackUser">/admin/backUser/addBackUser.jsp</result>
         </action>
 
 

@@ -17,7 +17,7 @@ public interface QaBackQuesService {
 
     public QaQuestion getQaQuestion(int l_id);
 
-    public Map getQuestionList(String pages, String limit, String[] rangeDate);
+    public Map getQuestionList(String pages, String limit, String[] rangeDate,int role);
 
     public Map getTheQuestion(int l_id);
 
@@ -30,7 +30,7 @@ public interface QaBackQuesService {
 
     public boolean deleteComm(int c_id);
 
-    Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check);
+    Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check,int topic);
 
 
     boolean checkQues(List<Integer> ids, int check);

@@ -132,11 +132,11 @@
         </div>
         <label class="label">角色:</label>
         <div class="input-inline ">
-            <s:if test="list[0].status==1">
+            <s:if test="list[0].role==0">
                 <input name="type" type="text" placeholder="请输入内容" class="input-text layui-word-aux" disabled="" value="超级管理员">
             </s:if>
-            <s:elseif test="list[0].status==2">
-                <input name="type" type="text" placeholder="请输入内容" class="input-text layui-word-aux" disabled value="普通会员">
+            <s:elseif test="list[0].role==1">
+                <input name="type" type="text" placeholder="请输入内容" class="input-text layui-word-aux" disabled value="话题管理员">
             </s:elseif>
 
         </div>

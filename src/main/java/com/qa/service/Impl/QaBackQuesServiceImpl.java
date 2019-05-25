@@ -44,11 +44,11 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
      * @return
      */
     @Override
-    public Map getQuestionList(String pages, String limit, String[] rangeDate) {
+    public Map getQuestionList(String pages, String limit, String[] rangeDate, int role) {
         List<BackQuestion> questionList = new ArrayList<BackQuestion>();
         int page = Integer.parseInt(pages);
         int limits = Integer.parseInt(limit);
-        Map map = this.qaBackQuesDao.getQuestionList(page, limits,rangeDate);
+        Map map = this.qaBackQuesDao.getQuestionList(page, limits,rangeDate, role);
         List list = (List) map.get("list");
         //自定义了BackQuestion类，来存放问题对象
         for(int i = 0;i < list.size();i++) {
@@ -213,11 +213,11 @@ public class QaBackQuesServiceImpl implements QaBackQuesService{
      * @return
      */
     @Override
-    public Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check) {
+    public Map getCheckQuestionList(String pages, String limit, String[] rangeDate, int check, int topic) {
         List<BackQuestion> questionList = new ArrayList<BackQuestion>();
         int page = Integer.parseInt(pages);
         int limits = Integer.parseInt(limit);
-        Map map = this.qaBackQuesDao.getCheckQuestionList(page, limits,rangeDate,check);
+        Map map = this.qaBackQuesDao.getCheckQuestionList(page, limits,rangeDate,check, topic);
         List list = (List) map.get("list");
         //自定义了BackQuestion类，来存放问题对象
         for(int i = 0;i < list.size();i++) {
