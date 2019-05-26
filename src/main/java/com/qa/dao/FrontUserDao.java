@@ -30,4 +30,8 @@ public interface FrontUserDao {
     Object getUserInfo(int id);
 
     Map getCheckedQuestionByUser(Integer id, Integer page);
+
+    boolean checkEmailByAccount(String account, String email);
+
+    boolean resetPassword(String account, String email, String password);
 }

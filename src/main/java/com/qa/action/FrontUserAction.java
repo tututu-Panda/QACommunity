@@ -410,6 +410,57 @@ public class FrontUserAction extends BaseAction {
     }
 
 
+    /**
+     * 用户忘记密码
+     * @return
+     */
+    public String resetPassword() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Map<String, Object> map = new HashMap<String, Object>();    // 定义map集合存如入返回json的集合
+
+        String account = request.getParameter("account");
+        String email = request.getParameter("email");
+
+        String password = super.EncoderByMd5("123456");
+
+        boolean b= frontUserService.resetPassword(account,email,password);
+
+        if(b){
+            status = "1";
+        }else{
+            status = "0";
+        }
+
+        map.put("status",status);
+        JSONObject.fromObject(map);
+
+        return "resetPassword";
+    }
+
+
+    /**
+     * 检验账户与邮箱是否对应
+     * @return
+     */
+    public String checkEmail(){
+        Map<String, Object> map = new HashMap<String, Object>();    // 定义map集合存如入返回json的集合
+
+        String account = request.getParameter("account");
+        String email = request.getParameter("email");
+
+        boolean b= frontUserService.checkEmailByAccount(account,email);
+
+        if(b){
+            status = "1";
+        }else{
+            status = "0";
+        }
+
+        map.put("status",status);
+        JSONObject.fromObject(map);
+        return "checkEmail";
+    }
+
+
     public String getStatus() {
         return status;
     }

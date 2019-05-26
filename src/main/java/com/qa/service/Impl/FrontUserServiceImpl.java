@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -110,5 +109,15 @@ public class FrontUserServiceImpl implements FrontUserService {
     @Override
     public Map getCheckedQuestionByUser(Integer id, Integer page) {
         return frontUserDao.getCheckedQuestionByUser(id,page);
+    }
+
+    @Override
+    public boolean checkEmailByAccount(String account, String email) {
+        return frontUserDao.checkEmailByAccount(account,email);
+    }
+
+    @Override
+    public boolean resetPassword(String account, String email, String password) {
+        return frontUserDao.resetPassword(account,email,password);
     }
 }

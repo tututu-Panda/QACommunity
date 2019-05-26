@@ -68,7 +68,7 @@
               <div class="layui-form-item">
                 <button class="layui-btn" lay-filter="login" lay-submit>立即登录</button>
                 <span style="padding-left:20px;">
-                  <a href="forget.html">忘记密码？</a>
+                  <a href="javascript:;"  class="forgetPass">忘记密码？</a>
                 </span>
               </div>
 
@@ -117,6 +117,22 @@
                 , '密码必须6到12位，且不能出现空格'
             ]
 
+        });
+
+
+        // 忘记密码
+        $(".forgetPass").on("click",function () {
+            layer.open({
+                type: 2,
+                title: ['忘记密码', 'text-align:center;'],
+                content: '<%=basePath %>/front/user/forget.jsp',
+                area:['400px', '350px'],  //宽高
+                resize: false,		//是否允许拉伸
+                scrollbar: false,
+                end: function(){
+                    location.reload();
+                }
+            });
         });
 
         // 提交表单

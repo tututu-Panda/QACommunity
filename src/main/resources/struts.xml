@@ -248,6 +248,12 @@
             <result name="uploadPhoto" type="json">
                 <param name="root">status</param>
             </result>
+            <result name="resetPassword" type="json">
+                <param name="root">status</param>
+            </result>
+            <result name="checkEmail" type="json">
+                <param name="root">status</param>
+            </result>
             <result name="login">/front/user/login.jsp</result>
             <result name="userIndex">/front/user/index.jsp</result>
             <result name="userHome">/front/user/home.jsp</result>

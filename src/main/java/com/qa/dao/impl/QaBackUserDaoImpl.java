@@ -172,11 +172,7 @@ public class QaBackUserDaoImpl implements QaBackUserDao{
         query.setString(0,password);
         query.setInteger(1,id);
         int result = query.executeUpdate();
-        if(result != 0) {
-            return true;
-        }else{
-            return false;
-        }
+        return result != 0;
     }
 
 

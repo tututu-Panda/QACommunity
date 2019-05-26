@@ -3,7 +3,6 @@ package com.qa.service;
 import com.qa.entity.QaFrontUser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,4 +34,8 @@ public interface FrontUserService {
     ArrayList getUserInfo(int id);
 
     Map getCheckedQuestionByUser(Integer id, Integer page);
+
+    boolean checkEmailByAccount(String account, String email);
+
+    boolean resetPassword(String account, String email, String password);
 }

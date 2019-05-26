@@ -2,7 +2,6 @@ package com.qa.dao.impl;
 
 import com.qa.dao.FrontUserDao;
 import com.qa.entity.QaFrontUser;
-import com.qa.entity.QaQuestion;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -250,5 +249,40 @@ public class FrontUserDaoImpl implements FrontUserDao {
         map.put("list",l);
         map.put("count",count);
         return map;
+    }
+
+
+    /**
+     * 查找账户与邮箱是否对应
+     * @param account
+     * @param email
+     * @return
+     */
+    @Override
+    public boolean checkEmailByAccount(String account, String email) {
+        String hql = "FROM  QaFrontUser where account = ? and email = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString(0,account);
+        query.setString(1,email);
+        return query.list().size() > 0;
+    }
+
+
+    /**
+     * 重置用户密码
+     * @param account
+     * @param email
+     * @param password
+     * @return
+     */
+    @Override
+    public boolean resetPassword(String account, String email, String password) {
+        String hql = "update  QaFrontUser set password = ? where account = ? and email = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString(0,password);
+        query.setString(1,account);
+        query.setString(2,email);
+        int result = query.executeUpdate();
+        return result != 0;
     }
 }
